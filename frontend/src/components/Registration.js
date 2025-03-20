@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './Header'; // Reusable header component
 import '../styles/registration.css'; // CSS for the registration page
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
 
 const Registration = () => {
   const location = useLocation();
@@ -18,6 +19,9 @@ const Registration = () => {
     role: role, // Automatically set role based on the login page selection
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,7 +29,21 @@ const Registration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert('Invalid email format. Please enter a valid email address.');
+      return;
+    }
+
+    // Phone number validation regex
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(formData.phoneNumber)) {
+      alert('Invalid phone number. Please enter a 10-digit phone number.');
+      return;
+    }
+
     // Validate password and confirm password
     if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match');
@@ -135,27 +153,43 @@ const Registration = () => {
           {/* Password */}
           <div className="input-field">
             <label htmlFor="password">Password*</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="password-input-container">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <span
+                className="eye-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </div>
 
           {/* Confirm Password */}
           <div className="input-field">
             <label htmlFor="confirmPassword">Confirm Password*</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
+            <div className="password-input-container">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              <span
+                className="eye-icon"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </div>
 
           {/* Submit Button */}

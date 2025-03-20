@@ -139,6 +139,7 @@ const Login = () => {
           Don't have an account?{' '}
           <button
   className="register-link"
+  style={{width:"30%"}}
   onClick={() => navigate('/register', { state: { role: activeUser } })}
 >
   Register here

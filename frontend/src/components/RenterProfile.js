@@ -1,10 +1,11 @@
 import React from 'react';
+import "../styles/RenterProfile.css";
 
 const RenterProfile = () => {
   return (
-    <div>
-    <div className="profile" style={{ marginTop: "6%", marginLeft: "1%" }}>
-      <h2>This is Where you can find your info!!!</h2>
+    <div  className = "dashboard-container" style={{ marginTop: "15%"}}>
+    <div className="profile">
+      <h2 style={{justifyContent:"center",marginTop:"0%",textAlign:"center"}} >This is Where you can find your info!!!</h2>
       {/* Add your car management logic here */}
     </div>
     </div>
