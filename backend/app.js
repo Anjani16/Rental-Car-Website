@@ -15,7 +15,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your frontend URL
+  origin: 'https://car-rental-frontend-azure.vercel.app', // Replace with your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow DELETE requests
   credentials: true,
 }));

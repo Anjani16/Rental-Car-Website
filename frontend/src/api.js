@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5555"; // Your backend server URL
+const API_BASE_URL = "https://rental-car-website-5iwe.onrender.com"; // Your backend server URL
 
 // Utility function to extract userId from the JWT token
 export const getUserIdFromToken = () => {

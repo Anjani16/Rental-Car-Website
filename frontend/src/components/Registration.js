@@ -51,7 +51,7 @@ const Registration = () => {
     }
   
     try {
-      const response = await fetch('http://localhost:5555/api/users/auth/register', {
+      const response = await fetch('https://rental-car-website-5iwe.onrender.com/api/users/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

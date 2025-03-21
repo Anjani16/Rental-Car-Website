@@ -28,7 +28,7 @@ const ManageCars = () => {
   const handleDeleteCar = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5555/api/cars/${id}`, {
+      const response = await fetch(`https://rental-car-website-5iwe.onrender.com/api/cars/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
