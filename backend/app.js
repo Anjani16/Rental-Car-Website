@@ -11,11 +11,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
+const allowedOrigins = [
+  "http://localhost:3000", // Local frontend
+  "https://rental-car-website-nwoz.vercel.app", // Deployed frontend on Vercel
+];
 // Middleware
 app.use(cors());
 app.use(cors({
-  origin: 'https://car-rental-frontend-azure.vercel.app', // Replace with your frontend URL
+  origin: allowedOrigins, // Frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow DELETE requests
   credentials: true,
 }));
