@@ -13,7 +13,7 @@ import { port, dbrul } from './config.js';
 // const app = express();
 
 // // Middleware
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "https://car-rental-frontend-azure.vercel.app", credentials: true }));
 // app.use(cors());
 app.use(express.json());
 // app.use(bodyParser.json());
