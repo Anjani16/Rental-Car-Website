@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './Header'; // Reusable header component
 import '../styles/registration.css'; // CSS for the registration page
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL; // Your backend server URL
 
 const Registration = () => {
   const location = useLocation();
@@ -51,7 +52,7 @@ const Registration = () => {
     }
   
     try {
-      const response = await fetch('https://rental-car-website-5iwe.onrender.com/api/users/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/users/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
