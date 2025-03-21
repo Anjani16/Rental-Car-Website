@@ -26,7 +26,11 @@ const Wishlist = () => {
         <div className="car-grid">
           {wishlistedCars.map((car) => (
             <div key={car._id} className="car-tile">
-              <img src={car.image} alt={`${car.brand} ${car.model}`} className="car-image" />
+             <img 
+  src={`${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}/${car.image.replace(/^\//, '')}`} 
+  alt={`${car.brand} ${car.model}`} 
+  className="car-image" 
+/>
               <h3>{car.brand} {car.model}, {car.year}</h3>
               <p className="car-price">${car.price}/hr</p>
             </div>
