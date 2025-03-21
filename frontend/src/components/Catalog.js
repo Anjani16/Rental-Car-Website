@@ -3,6 +3,7 @@ import { fetchAllCars, toggleWishlist, getUserIdFromToken } from "../api";
 import { FaHeart, FaRegHeart, FaShoppingCart, FaSearch } from "react-icons/fa";
 import { useLocation } from "react-router-dom"; // Import useLocation
 import "../styles/Catalog.css";
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
 const Catalog = () => {
   const [cars, setCars] = useState([]);
@@ -133,7 +134,8 @@ const Catalog = () => {
 
             {/* Car Image */}
             <div className="car-image-container">
-              <img src={car.image} alt={`${car.brand} ${car.model}`} className="car-image" />
+              <img src={`${API_BASE_URL.replace(/\/$/, '')}/${car.image.replace(/^\//, '')}`} 
+     alt={`${car.brand} ${car.model}`} className="car-image" />
             </div>
 
             {/* Car Details */}
@@ -166,7 +168,8 @@ const Catalog = () => {
               ×
             </button>
             <div className="modal-car-image-container">
-              <img src={selectedCar.image} alt={`${selectedCar.brand} ${selectedCar.model}`} className="modal-car-image" />
+              <img src={`${API_BASE_URL.replace(/\/$/, '')}/${selectedCar.image.replace(/^\//, '')}`} 
+     alt={`${selectedCar.brand} ${selectedCar.model}`} className="modal-car-image" />
             </div>
             <h2>{selectedCar.brand} {selectedCar.model}</h2>
             <p>Type: {selectedCar.type}</p>
