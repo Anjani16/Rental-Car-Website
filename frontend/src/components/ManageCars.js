@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ManageCars.css";
 import { fetchUserCars } from '../api'; // Import the fetchUserCars function
-
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const ManageCars = () => {
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
@@ -28,7 +28,7 @@ const ManageCars = () => {
   const handleDeleteCar = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://rental-car-website-5iwe.onrender.com/api/cars/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/cars/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
