@@ -80,7 +80,11 @@ const ManageCars = () => {
         {/* Image Column */}
         <td>
           {car.image ? (
-            <img src={car.image} alt={`${car.brand} ${car.model}`} className="car-imageOwner" />
+            <img 
+      src={`${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}/${car.image.replace(/^\//, '')}`} 
+      alt={`${car.brand} ${car.model}`} 
+      className="car-imageOwner" 
+    />
           ) : (
             <div className="no-image">No Image</div>
           )}
