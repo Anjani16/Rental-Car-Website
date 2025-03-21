@@ -16,7 +16,7 @@ const allowedOrigins = [
   "https://rental-car-website-nwoz.vercel.app", // Deployed frontend on Vercel
 ];
 // Middleware
-app.use(cors());
+// app.use(cors());
 app.use(cors({
   origin: allowedOrigins, // Frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow DELETE requests
