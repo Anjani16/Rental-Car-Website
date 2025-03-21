@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 //import ForgotPassword from './ForgotPassword'
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL; // Your backend server URL
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const Login = () => {
     console.log('Login request payload:', payload); 
   
     try {
-      const response = await fetch('https://rental-car-website-5iwe.onrender.com/api/users/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/users/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
