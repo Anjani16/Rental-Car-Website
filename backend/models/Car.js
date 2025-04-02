@@ -13,9 +13,9 @@ const carSchema = new mongoose.Schema({
   carNumber: { type: String, required: true },
   // userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Owner's ID
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  cartedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   wishlistedBy:[{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] // 🔥 Wishlist field
 }, { timestamps: true });
-
 const Car = mongoose.model("Car", carSchema);
 
 export default Car;

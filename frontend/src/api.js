@@ -156,3 +156,56 @@ export const toggleWishlist = async (carId, token) => {
     throw error;
   }
 };
+// Update these functions in api.js
+// In api.js
+export const addToCart = async (carId) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/cars/${carId}/cart`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    console.log('Add to cart response:', response.data); // Debug log
+    return response.data;
+  } catch (error) {
+    console.error('Error adding to cart:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const removeFromCart = async (carId) => {
+  try {
+    const response = await axios.delete(
+      `${API_BASE_URL}/api/cars/${carId}/cart`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    console.log('Remove from cart response:', response.data); // Debug log
+    return response.data;
+  } catch (error) {
+    console.error('Error removing from cart:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// Get cart items
+export const fetchCartItems = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/cars/cart`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching cart items:', error);
+    throw error;
+  }
+};

@@ -218,5 +218,76 @@ router.get("/wishlist", async (req, res) => {
   }
 });
 
+// Add to cart
+router.post("/:id/cart", async (req, res) => {
+  try {
+    console.log("Cart API Hit");
+    const { id } = req.params; // Car ID
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) return res.status(401).json({ message: "No token provided" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const car = await Car.findById(id);
+    if (!car) return res.status(404).json({ message: "Car not found" });
+
+    // Check if already in cart
+    if (car.cartedBy.includes(userId)) {
+      return res.status(400).json({ message: "Car already in cart" });
+    }
+
+    // Add to cart
+    car.cartedBy.push(userId);
+    await car.save();
+
+    res.json({ message: "Added to cart successfully!", car });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Remove from cart
+router.delete("/:id/cart", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) return res.status(401).json({ message: "No token provided" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const car = await Car.findById(id);
+    if (!car) return res.status(404).json({ message: "Car not found" });
+
+    // Remove from cart
+    car.cartedBy = car.cartedBy.filter(id => id.toString() !== userId);
+    await car.save();
+
+    res.json({ message: "Removed from cart successfully!", car });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get user's cart items
+router.get("/cart", async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token provided" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    // Find all cars where cartedBy includes userId
+    const cartItems = await Car.find({ cartedBy: userId });
+    res.json(cartItems);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Other routes (update, delete, etc.) remain unchanged
 export default router;
