@@ -209,14 +209,26 @@ router.get("/wishlist", async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId; // Extract user ID
 
-    // ✅ Fetch only cars that are wishlisted by the user
+    // Fetch wishlisted cars
     const wishlistedCars = await Car.find({ wishlistedBy: userId });
 
-    res.json(wishlistedCars);
+    // Fetch owner details for each car
+    const carsWithOwnerDetails = await Promise.all(
+      wishlistedCars.map(async (car) => {
+        const owner = await User.findById(car.userId, "firstName phoneNumber");
+        return {
+          ...car._doc, // Spread car details
+          owner: owner ? { firstName: owner.firstName, phoneNumber: owner.phoneNumber } : null,
+        };
+      })
+    );
+
+    res.json(carsWithOwnerDetails); // Send formatted response
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // Add to cart
 router.post("/:id/cart", async (req, res) => {
