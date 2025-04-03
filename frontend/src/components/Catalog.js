@@ -22,6 +22,7 @@ const Catalog = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCartLoading, setIsCartLoading] = useState(false);
   const location = useLocation();
   const userId = getUserIdFromToken();
 
@@ -30,23 +31,17 @@ const Catalog = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Fetch cars data
-        const carsData = await fetchAllCars();
+        const [carsData, cartData] = await Promise.all([
+          fetchAllCars(),
+          userId ? fetchCartItems().catch(() => []) : Promise.resolve([])
+        ]);
+        
         setCars(carsData);
         setFilteredCars(carsData);
-        
-        // Fetch cart items if user is logged in
-        if (userId) {
-          try {
-            const cartData = await fetchCartItems();
-            setCartItems(cartData);
-          } catch (cartError) {
-            console.error("Error fetching cart items:", cartError);
-          }
-        }
+        setCartItems(cartData);
       } catch (error) {
-        console.error("Error fetching cars:", error);
-        setError("Failed to load cars. Please try again later.");
+        console.error("Error fetching data:", error);
+        setError("Failed to load data. Please try again later.");
       } finally {
         setIsLoading(false);
       }
@@ -93,33 +88,34 @@ const Catalog = () => {
       return;
     }
 
+    if (isCartLoading) return;
+    setIsCartLoading(true);
+
     try {
       const isInCart = cartItems.some(item => item._id === car._id);
       
       if (isInCart) {
         // Remove from cart
         await removeFromCart(car._id);
-        setCartItems(prev => prev.filter(item => item._id !== car._id));
-        // Update cars state to reflect removal
-        setCars(prev => prev.map(c => 
-          c._id === car._id 
-            ? {...c, cartedBy: c.cartedBy?.filter(id => id.toString() !== userId)} 
-            : c
-        ));
       } else {
         // Add to cart
         await addToCart(car._id);
-        setCartItems(prev => [...prev, car]);
-        // Update cars state to reflect addition
-        setCars(prev => prev.map(c => 
-          c._id === car._id 
-            ? {...c, cartedBy: [...(c.cartedBy || []), userId]} 
-            : c
-        ));
       }
+
+      // Refresh both cart items and cars list
+      const [updatedCart, updatedCars] = await Promise.all([
+        fetchCartItems(),
+        fetchAllCars()
+      ]);
+
+      setCartItems(updatedCart);
+      setCars(updatedCars);
+      setFilteredCars(updatedCars);
     } catch (error) {
       console.error("Error updating cart:", error);
       setError(`Failed to update cart: ${error.response?.data?.message || error.message}`);
+    } finally {
+      setIsCartLoading(false);
     }
   };
 
@@ -190,7 +186,7 @@ const Catalog = () => {
         <div className="car-grid">
           {filteredCars.map((car) => {
             const isWishlisted = car.wishlistedBy?.includes(userId);
-            const isInCart = car.cartedBy?.includes(userId) || cartItems.some(item => item._id === car._id);
+            const isInCart = cartItems.some(item => item._id === car._id);
 
             return (
               <div key={car._id} className="car-tile">
@@ -225,15 +221,16 @@ const Catalog = () => {
                   <button
                     className={`cart-button ${isInCart ? "in-cart" : ""}`}
                     onClick={() => handleCartClick(car)}
+                    disabled={isCartLoading}
                   >
-                    {isInCart ?  (
-    <div className="striked-cart">
-      <FaShoppingCart />
-      <div className="strike-line"></div>
-    </div>
-  ) : (
-    <FaShoppingCart />
-  )}
+                    {isInCart ? (
+                      <div className="striked-cart">
+                        <FaShoppingCart />
+                        <div className="strike-line"></div>
+                      </div>
+                    ) : (
+                      <FaShoppingCart />
+                    )}
                   </button>
                   <button
                     className="learn-more-button"
@@ -272,12 +269,13 @@ const Catalog = () => {
                   cartItems.some(item => item._id === selectedCar._id) ? "in-cart" : ""
                 }`}
                 onClick={() => handleCartClick(selectedCar)}
+                disabled={isCartLoading}
               >
                 {cartItems.some(item => item._id === selectedCar._id)
                   ? <div className="striked-cart">
-                  <FaShoppingCart />
-                  <div className="strike-line"></div>
-                </div>
+                      <FaShoppingCart />
+                      <div className="strike-line"></div>
+                    </div>
                   : <FaShoppingCart />}
               </button>
               <button className="book-now-button">Book Now</button>

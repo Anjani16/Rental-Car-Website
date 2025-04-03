@@ -157,7 +157,7 @@ export const toggleWishlist = async (carId, token) => {
   }
 };
 // Update these functions in api.js
-// In api.js
+// Add to cart
 export const addToCart = async (carId) => {
   try {
     const response = await axios.post(
@@ -169,7 +169,6 @@ export const addToCart = async (carId) => {
         },
       }
     );
-    console.log('Add to cart response:', response.data); // Debug log
     return response.data;
   } catch (error) {
     console.error('Error adding to cart:', error.response?.data || error.message);
@@ -177,6 +176,7 @@ export const addToCart = async (carId) => {
   }
 };
 
+// Remove from cart
 export const removeFromCart = async (carId) => {
   try {
     const response = await axios.delete(
@@ -187,7 +187,6 @@ export const removeFromCart = async (carId) => {
         },
       }
     );
-    console.log('Remove from cart response:', response.data); // Debug log
     return response.data;
   } catch (error) {
     console.error('Error removing from cart:', error.response?.data || error.message);
