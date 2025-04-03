@@ -298,18 +298,21 @@ router.get("/cart", async (req, res) => {
 
     // Find all cars where cartedBy includes userId
     const cartItems = await Car.find({ cartedBy: userId });
+    
+    // Fetch owner details for each car
     const carsWithOwnerDetails = await Promise.all(
       cartItems.map(async (car) => {
         const owner = await User.findById(car.userId, "firstName phoneNumber");
         return {
-          ...car._doc, // Spread car details
-          owner:{
-            firstName: owner.firstName,
-            phoneNumber: owner.phoneNumber,
-          },
+          ...car._doc,
+          owner: {
+            firstName: owner?.firstName || "N/A",
+            phoneNumber: owner?.phoneNumber || "N/A"
+          }
         };
       })
     );
+    
     res.json(carsWithOwnerDetails);
   } catch (error) {
     res.status(500).json({ error: error.message });
