@@ -299,7 +299,7 @@ router.get("/cart", async (req, res) => {
     // Find all cars where cartedBy includes userId
     const cartItems = await Car.find({ cartedBy: userId });
     const carsWithOwnerDetails = await Promise.all(
-      wishlistedCars.map(async (car) => {
+      cartItems.map(async (car) => {
         const owner = await User.findById(car.userId, "firstName phoneNumber");
         return {
           ...car._doc, // Spread car details
