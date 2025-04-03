@@ -157,12 +157,11 @@ export const toggleWishlist = async (carId, token) => {
   }
 };
 // Update these functions in api.js
-// Add to cart
-export const addToCart = async (carId) => {
+export const addToCart = async (carId, hours = 1) => {
   try {
     const response = await axios.post(
       `${API_BASE_URL}/api/cars/${carId}/cart`,
-      {},
+      { hours },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -176,7 +175,24 @@ export const addToCart = async (carId) => {
   }
 };
 
-// Remove from cart
+export const updateCartItem = async (carId, hours) => {
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/api/cars/${carId}/cart`,
+      { hours },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error updating cart:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
 export const removeFromCart = async (carId) => {
   try {
     const response = await axios.delete(
@@ -194,7 +210,6 @@ export const removeFromCart = async (carId) => {
   }
 };
 
-// Get cart items
 export const fetchCartItems = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/api/cars/cart`, {
@@ -205,6 +220,16 @@ export const fetchCartItems = async () => {
     return response.data;
   } catch (error) {
     console.error('Error fetching cart items:', error);
+    throw error;
+  }
+};
+
+export const fetchCarById = async (carId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/cars/${carId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching car details:', error);
     throw error;
   }
 };

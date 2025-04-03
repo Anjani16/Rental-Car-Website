@@ -10,16 +10,15 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isRemoving, setIsRemoving] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
         const cartData = await fetchCartItems();
         setCartItems(cartData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching cart:", error);
-      } finally {
         setLoading(false);
       }
     };
@@ -27,12 +26,8 @@ const Cart = () => {
   }, []);
 
   const handleRemoveFromCart = async (carId) => {
-    if (isRemoving) return;
-    setIsRemoving(true);
-
     try {
       await removeFromCart(carId);
-      // Optimistic update
       setCartItems(prev => prev.filter(item => item._id !== carId));
       // Close modal if the removed car is the one being viewed
       if (selectedCar && selectedCar._id === carId) {
@@ -40,11 +35,6 @@ const Cart = () => {
       }
     } catch (error) {
       console.error("Error removing from cart:", error);
-      // Revert optimistic update if error occurs
-      const freshCart = await fetchCartItems();
-      setCartItems(freshCart);
-    } finally {
-      setIsRemoving(false);
     }
   };
 
@@ -58,7 +48,7 @@ const Cart = () => {
     setSelectedCar(null);
   };
 
-  if (loading) return <div className="loading-message">Loading your cart...</div>;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="catalog">
@@ -96,9 +86,8 @@ const Cart = () => {
                 <button
                   className="remove-from-cart-button"
                   onClick={() => handleRemoveFromCart(car._id)}
-                  disabled={isRemoving}
                 >
-                  <FaTimes /> {isRemoving ? "Removing..." : "Remove from cart"}
+                  <FaTimes /> Remove from cart
                 </button>
                 <button
                   className="learn-more-button"
@@ -112,6 +101,7 @@ const Cart = () => {
         </div>
       )}
 
+      {/* Modal for car details */}
       {isModalOpen && selectedCar && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -134,9 +124,8 @@ const Cart = () => {
               <button
                 className="remove-from-cart-button"
                 onClick={() => handleRemoveFromCart(selectedCar._id)}
-                disabled={isRemoving}
               >
-                <FaTimes /> {isRemoving ? "Removing..." : "Remove from cart"}
+                <FaTimes /> Remove from cart
               </button>
               <button className="book-now-button">Book Now</button>
             </div>

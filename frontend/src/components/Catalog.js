@@ -87,35 +87,22 @@ const Catalog = () => {
       alert("Please login to manage your cart");
       return;
     }
-
-    if (isCartLoading) return;
-    setIsCartLoading(true);
-
+  
     try {
       const isInCart = cartItems.some(item => item._id === car._id);
       
       if (isInCart) {
         // Remove from cart
         await removeFromCart(car._id);
+        setCartItems(prev => prev.filter(item => item._id !== car._id));
       } else {
-        // Add to cart
-        await addToCart(car._id);
+        // Add to cart with default 1 hour
+        await addToCart(car._id, 1);
+        setCartItems(prev => [...prev, { ...car, hours: 1 }]);
       }
-
-      // Refresh both cart items and cars list
-      const [updatedCart, updatedCars] = await Promise.all([
-        fetchCartItems(),
-        fetchAllCars()
-      ]);
-
-      setCartItems(updatedCart);
-      setCars(updatedCars);
-      setFilteredCars(updatedCars);
     } catch (error) {
       console.error("Error updating cart:", error);
       setError(`Failed to update cart: ${error.response?.data?.message || error.message}`);
-    } finally {
-      setIsCartLoading(false);
     }
   };
 
