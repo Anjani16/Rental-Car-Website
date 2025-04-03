@@ -329,6 +329,18 @@ router.get("/cart", async (req, res) => {
 
     // Find all cars where cartedBy includes the userId
     const cars = await Car.find({ "cartedBy.userId": userId });
+    const carsWithOwnerDetails = await Promise.all(
+      cars.map(async (car) => {
+        const owner = await User.findById(car.userId, "firstName phoneNumber");
+        return {
+          ...car._doc, // Spread car details
+          owner:{
+            firstName: owner.firstName,
+            phoneNumber: owner.phoneNumber,
+          },
+        };
+      })
+    );
 
     // Format the response to include hours
     const cartItems = cars.map(car => {
