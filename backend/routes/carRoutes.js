@@ -236,9 +236,9 @@ router.get("/wishlist", async (req, res) => {
 // Add to cart
 router.post("/:id/cart", async (req, res) => {
   try {
-    const { id } = req.params;
+    console.log("Cart API Hit");
+    const { id } = req.params; // Car ID
     const token = req.headers.authorization?.split(" ")[1];
-    const { hours = 1 } = req.body;
 
     if (!token) return res.status(401).json({ message: "No token provided" });
 
@@ -249,13 +249,12 @@ router.post("/:id/cart", async (req, res) => {
     if (!car) return res.status(404).json({ message: "Car not found" });
 
     // Check if already in cart
-    const existingItem = car.cartedBy.find(item => item.userId.toString() === userId);
-    if (existingItem) {
+    if (car.cartedBy.includes(userId)) {
       return res.status(400).json({ message: "Car already in cart" });
     }
 
-    // Add to cart with hours
-    car.cartedBy.push({ userId, hours });
+    // Add to cart
+    car.cartedBy.push(userId);
     await car.save();
 
     res.json({ message: "Added to cart successfully!", car });
@@ -264,40 +263,10 @@ router.post("/:id/cart", async (req, res) => {
   }
 });
 
-// Update cart item hours
-router.put("/:id/cart", async (req, res) => {
-  try {
-    const { id } = req.params; // carId
-    const { hours } = req.body;
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) return res.status(401).json({ message: "No token provided" });
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.userId;
-
-    const car = await Car.findById(id);
-    if (!car) return res.status(404).json({ message: "Car not found" });
-
-    // Find and update the cart item
-    const cartItem = car.cartedBy.find(item => item.userId.toString() === userId);
-    if (!cartItem) {
-      return res.status(404).json({ message: "Cart item not found" });
-    }
-
-    cartItem.hours = hours;
-    await car.save();
-
-    res.json({ message: "Cart updated successfully!", car });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 // Remove from cart
 router.delete("/:id/cart", async (req, res) => {
   try {
-    const { id } = req.params; // carId
+    const { id } = req.params;
     const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) return res.status(401).json({ message: "No token provided" });
@@ -309,7 +278,7 @@ router.delete("/:id/cart", async (req, res) => {
     if (!car) return res.status(404).json({ message: "Car not found" });
 
     // Remove from cart
-    car.cartedBy = car.cartedBy.filter(item => item.userId.toString() !== userId);
+    car.cartedBy = car.cartedBy.filter(id => id.toString() !== userId);
     await car.save();
 
     res.json({ message: "Removed from cart successfully!", car });
@@ -318,7 +287,7 @@ router.delete("/:id/cart", async (req, res) => {
   }
 });
 
-// Get user's cart items with hours
+// Get user's cart items
 router.get("/cart", async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -327,10 +296,10 @@ router.get("/cart", async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
-    // Find all cars where cartedBy includes the userId
-    const cars = await Car.find({ "cartedBy.userId": userId });
+    // Find all cars where cartedBy includes userId
+    const cartItems = await Car.find({ cartedBy: userId });
     const carsWithOwnerDetails = await Promise.all(
-      cars.map(async (car) => {
+      cartItems.map(async (car) => {
         const owner = await User.findById(car.userId, "firstName phoneNumber");
         return {
           ...car._doc, // Spread car details
@@ -341,20 +310,11 @@ router.get("/cart", async (req, res) => {
         };
       })
     );
-
-    // Format the response to include hours
-    const cartItems = carsWithOwnerDetails.map(car => {
-      const cartItem = car.cartedBy.find(item => item.userId.toString() === userId);
-      return {
-        ...car.toObject(),
-        hours: cartItem.hours
-      };
-    });
-
-    res.json(cartItems);
+    res.json(carsWithOwnerDetails);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 // Other routes (update, delete, etc.) remain unchanged
 export default router;
