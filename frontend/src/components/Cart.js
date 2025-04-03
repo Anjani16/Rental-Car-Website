@@ -8,6 +8,8 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -27,9 +29,23 @@ const Cart = () => {
     try {
       await removeFromCart(carId);
       setCartItems(prev => prev.filter(item => item._id !== carId));
+      // Close modal if the removed car is the one being viewed
+      if (selectedCar && selectedCar._id === carId) {
+        handleCloseModal();
+      }
     } catch (error) {
       console.error("Error removing from cart:", error);
     }
+  };
+
+  const handleLearnMore = (car) => {
+    setSelectedCar(car);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCar(null);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -73,9 +89,52 @@ const Cart = () => {
                 >
                   <FaTimes /> Remove from cart
                 </button>
+                <button
+                  className="learn-more-button"
+                  onClick={() => handleLearnMore(car)}
+                >
+                  Learn More
+                </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Modal for car details */}
+      {isModalOpen && selectedCar && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal-button" onClick={handleCloseModal}>
+              ×
+            </button>
+            <div className="modal-car-image-container">
+              <img
+                src={`${API_BASE_URL}/${selectedCar.image?.replace(/^\//, '')}`}
+                alt={`${selectedCar.brand} ${selectedCar.model}`}
+                className="modal-car-image"
+              />
+            </div>
+            <h2>{selectedCar.brand} {selectedCar.model}</h2>
+            <p>Type: {selectedCar.type}</p>
+            <p>Mileage: {selectedCar.mileage}</p>
+            <p>Price: ${selectedCar.price}/hr</p>
+            <p>Availability: {selectedCar.availability}</p>
+            <div className="modal-buttons">
+              <button
+                className="remove-from-cart-button"
+                onClick={() => handleRemoveFromCart(selectedCar._id)}
+              >
+                <FaTimes /> Remove from cart
+              </button>
+              <button className="book-now-button">Book Now</button>
+            </div>
+            <div className="owner-details">
+              <h3>Owner Details</h3>
+              <p>Name: {selectedCar.owner?.firstName || "N/A"}</p>
+              <p>Phone: {selectedCar.owner?.phoneNumber || "N/A"}</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
