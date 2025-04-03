@@ -218,7 +218,10 @@ router.get("/wishlist", async (req, res) => {
         const owner = await User.findById(car.userId, "firstName phoneNumber");
         return {
           ...car._doc, // Spread car details
-          owner: owner ? { firstName: owner.firstName, phoneNumber: owner.phoneNumber } : null,
+          owner:{
+            firstName: owner.firstName,
+            phoneNumber: owner.phoneNumber,
+          },
         };
       })
     );
