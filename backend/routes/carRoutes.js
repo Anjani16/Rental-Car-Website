@@ -343,7 +343,7 @@ router.get("/cart", async (req, res) => {
     );
 
     // Format the response to include hours
-    const cartItems = cars.map(car => {
+    const cartItems = carsWithOwnerDetails.map(car => {
       const cartItem = car.cartedBy.find(item => item.userId.toString() === userId);
       return {
         ...car.toObject(),
