@@ -88,21 +88,30 @@ const Catalog = () => {
       return;
     }
   
+    setIsCartLoading(true); // Add loading state
     try {
       const isInCart = cartItems.some(item => item._id === car._id);
       
       if (isInCart) {
-        // Remove from cart
         await removeFromCart(car._id);
         setCartItems(prev => prev.filter(item => item._id !== car._id));
       } else {
-        // Add to cart with default 1 hour
-        await addToCart(car._id, 1);
+        const response = await addToCart(car._id, 1); // Wait for response
         setCartItems(prev => [...prev, { ...car, hours: 1 }]);
+        
+        // Update cars state to reflect cart status
+        setCars(prev => prev.map(c => 
+          c._id === car._id ? { ...c, cartedBy: [...(c.cartedBy || []), { userId, hours: 1 }] } : c
+        ));
+        setFilteredCars(prev => prev.map(c => 
+          c._id === car._id ? { ...c, cartedBy: [...(c.cartedBy || []), { userId, hours: 1 }] } : c
+        ));
       }
     } catch (error) {
       console.error("Error updating cart:", error);
       setError(`Failed to update cart: ${error.response?.data?.message || error.message}`);
+    } finally {
+      setIsCartLoading(false);
     }
   };
 
