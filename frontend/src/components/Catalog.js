@@ -226,7 +226,14 @@ const Catalog = () => {
                     className={`cart-button ${isInCart ? "in-cart" : ""}`}
                     onClick={() => handleCartClick(car)}
                   >
-                    {isInCart ? "Remove" : <FaShoppingCart />}
+                    {isInCart ?  (
+    <div className="striked-cart">
+      <FaShoppingCart />
+      <div className="strike-line"></div>
+    </div>
+  ) : (
+    <FaShoppingCart />
+  )}
                   </button>
                   <button
                     className="learn-more-button"
@@ -267,7 +274,10 @@ const Catalog = () => {
                 onClick={() => handleCartClick(selectedCar)}
               >
                 {cartItems.some(item => item._id === selectedCar._id)
-                  ? "Remove from Cart"
+                  ? <div className="striked-cart">
+                  <FaShoppingCart />
+                  <div className="strike-line"></div>
+                </div>
                   : <FaShoppingCart />}
               </button>
               <button className="book-now-button">Book Now</button>
