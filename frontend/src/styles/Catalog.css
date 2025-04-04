@@ -405,3 +405,68 @@
   transform: rotate(-30deg);
   color:#333;
 }
+/* Cart Total Styles */
+.cart-total {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  text-align: right;
+}
+
+.cart-total h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+/* Hours Selector Styles */
+.hours-selector {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  color: blue;
+
+}
+
+.hours-selector button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #57AEC3;
+}
+
+.hours-selector button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color:#57AEC3;
+}
+
+.hours-selector span {
+  font-weight: bold;
+  min-width: 60px;
+  text-align: center;
+}
+
+.item-total {
+  font-weight: bold;
+  color: #28a745;
+  margin-top: 0.5rem;
+}
+
+/* Modal hours selector */
+.modal-content .hours-selector {
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.modal-content .item-total {
+  text-align: center;
+  font-size: 1.1rem;
+}

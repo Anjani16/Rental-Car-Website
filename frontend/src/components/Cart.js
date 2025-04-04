@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { fetchCartItems, removeFromCart } from "../api";
-import { FaTimes, FaShoppingCart } from "react-icons/fa";
+import { fetchCartItems, removeFromCart, updateCartItem } from "../api";
+import { FaTimes, FaShoppingCart, FaPlus, FaMinus } from "react-icons/fa";
 import "../styles/Catalog.css";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -10,6 +11,8 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -29,12 +32,29 @@ const Cart = () => {
     try {
       await removeFromCart(carId);
       setCartItems(prev => prev.filter(item => item._id !== carId));
-      // Close modal if the removed car is the one being viewed
       if (selectedCar && selectedCar._id === carId) {
         handleCloseModal();
       }
     } catch (error) {
       console.error("Error removing from cart:", error);
+    }
+  };
+
+  const handleUpdateHours = async (carId, newHours) => {
+    if (newHours < 1) return; // Minimum 1 hour
+    
+    setIsUpdating(true);
+    try {
+      await updateCartItem(carId, newHours);
+      setCartItems(prev => 
+        prev.map(item => 
+          item._id === carId ? { ...item, hours: newHours } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating hours:", error);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -48,12 +68,23 @@ const Cart = () => {
     setSelectedCar(null);
   };
 
-  if (loading) return <div>Loading...</div>;
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => {
+      return total + (item.price * item.hours);
+    }, 0).toFixed(2);
+  };
+
+  if (loading) return <div className="loading-message">Loading cart...</div>;
 
   return (
     <div className="catalog">
       <div className="catalog-header">
         <h2>Your Cart</h2>
+        {cartItems.length > 0 && (
+          <div className="cart-total">
+            <h3>Total: ${calculateTotal()}</h3>
+          </div>
+        )}
       </div>
 
       {cartItems.length === 0 ? (
@@ -80,6 +111,26 @@ const Cart = () => {
                 <p className="car-price">${car.price}/hr</p>
                 <p>Type: {car.type}</p>
                 <p>Mileage: {car.mileage}</p>
+                
+                {/* Hours selection */}
+                <div className="hours-selector">
+                  <button 
+                    onClick={() => handleUpdateHours(car._id, car.hours - 1)}
+                    disabled={car.hours <= 1 || isUpdating}
+                  >
+                    <FaMinus />
+                  </button>
+                  <span>{car.hours} hour{car.hours !== 1 ? 's' : ''}</span>
+                  <button 
+                    onClick={() => handleUpdateHours(car._id, car.hours + 1)}
+                    disabled={isUpdating}
+                  >
+                    <FaPlus />
+                  </button>
+                </div>
+                <p className="item-total">
+                  Item Total: ${(car.price * car.hours).toFixed(2)}
+                </p>
               </div>
 
               <div className="car-buttons">
@@ -120,6 +171,27 @@ const Cart = () => {
             <p>Mileage: {selectedCar.mileage}</p>
             <p>Price: ${selectedCar.price}/hr</p>
             <p>Availability: {selectedCar.availability}</p>
+            
+            {/* Hours selection in modal */}
+            <div className="hours-selector">
+              <button 
+                onClick={() => handleUpdateHours(selectedCar._id, selectedCar.hours - 1)}
+                disabled={selectedCar.hours <= 1 || isUpdating}
+              >
+                <FaMinus />
+              </button>
+              <span>{selectedCar.hours} hour{selectedCar.hours !== 1 ? 's' : ''}</span>
+              <button 
+                onClick={() => handleUpdateHours(selectedCar._id, selectedCar.hours + 1)}
+                disabled={isUpdating}
+              >
+                <FaPlus />
+              </button>
+            </div>
+            <p className="item-total">
+              Item Total: ${(selectedCar.price * selectedCar.hours).toFixed(2)}
+            </p>
+            
             <div className="modal-buttons">
               <button
                 className="remove-from-cart-button"
@@ -127,7 +199,12 @@ const Cart = () => {
               >
                 <FaTimes /> Remove from cart
               </button>
-              <button className="book-now-button">Book Now</button>
+              <button 
+                className="book-now-button"
+                onClick={() => navigate(`/booking/${selectedCar._id}`)}
+              >
+                Book Now
+              </button>
             </div>
             <div className="owner-details">
               <h3>Owner Details</h3>
