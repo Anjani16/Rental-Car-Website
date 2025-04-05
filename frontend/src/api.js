@@ -233,3 +233,55 @@ export const fetchCarById = async (carId) => {
     throw error;
   }
 };
+
+// Add to your api.js
+export const submitBooking = async (bookingData) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/bookings`,
+      bookingData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error submitting booking:', error);
+    throw error;
+  }
+};
+
+export const sendNotificationToOwner = async (ownerId, notification) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/notifications/${ownerId}`,
+      notification,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error sending notification:', error);
+    throw error;
+  }
+};
+
+// Add this to your api.js file
+export const fetchNotifications = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/notifications`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    throw error;
+  }
+};

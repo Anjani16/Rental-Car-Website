@@ -5,11 +5,15 @@ import {
   getUserIdFromToken,
   fetchCartItems,
   addToCart, 
-  removeFromCart 
+  removeFromCart,
+  submitBooking
 } from "../api";
 import { FaHeart, FaRegHeart, FaShoppingCart, FaSearch } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/Catalog.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import BookingModal from "./BookingModal";
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -19,11 +23,13 @@ const Catalog = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCartLoading, setIsCartLoading] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const userId = getUserIdFromToken();
 
   // Fetch all cars and cart items
@@ -109,7 +115,7 @@ const Catalog = () => {
       }
     } catch (error) {
       console.error("Error updating cart:", error);
-      setError(`Failed to update cart: ${error.response?.data?.message || error.message}`);
+      toast.error(`Failed to update cart: ${error.response?.data?.message || error.message}`);
     } finally {
       setIsCartLoading(false);
     }
@@ -131,7 +137,7 @@ const Catalog = () => {
       );
     } catch (error) {
       console.error("Error updating wishlist:", error);
-      setError("Failed to update wishlist.");
+      toast.error("Failed to update wishlist.");
     }
   };
 
@@ -145,6 +151,18 @@ const Catalog = () => {
     setSelectedCar(null);
   };
 
+  const handleBookingSubmit = async (bookingData) => {
+    try {
+      await submitBooking(bookingData);
+      toast.success('Booking request submitted successfully!');
+      setIsBookingModalOpen(false);
+      navigate('/renter/history');
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      toast.error('Failed to submit booking request');
+    }
+  };
+
   if (isLoading) {
     return <div className="loading-message">Loading cars...</div>;
   }
@@ -155,6 +173,8 @@ const Catalog = () => {
 
   return (
     <div className="catalog">
+      <ToastContainer position="top-right" autoClose={3000} />
+      
       <div className="catalog-header">
         <h2>Catalog</h2>
         <div className="search-bar">
@@ -274,7 +294,15 @@ const Catalog = () => {
                     </div>
                   : <FaShoppingCart />}
               </button>
-              <button className="book-now-button">Book Now</button>
+              <button 
+                className="book-now-button"
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setIsBookingModalOpen(true);
+                }}
+              >
+                Book Now
+              </button>
             </div>
             <div className="owner-details">
               <h3>Owner Details</h3>
@@ -283,6 +311,14 @@ const Catalog = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {isBookingModalOpen && selectedCar && (
+        <BookingModal
+          car={selectedCar}
+          onClose={() => setIsBookingModalOpen(false)}
+          onSubmit={handleBookingSubmit}
+        />
       )}
     </div>
   );

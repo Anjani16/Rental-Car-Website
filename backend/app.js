@@ -6,6 +6,8 @@ import { fileURLToPath } from "url"; // Needed for ES modules
 // import bodyParser from "body-parser"; // Not needed if using express.json()
 import authRoutes from "./routes/auth.js"; // Ensure this file exists
 import carRoutes from "./routes/carRoutes.js"; // ✅ Import the cars route
+import BookingRoutes from "./routes/BookingRoutes.js";
+import NotificationRoutes from "./routes/NotificationRoutes.js";
 // Resolve __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +35,9 @@ app.use("/uploads", express.static((path.join(__dirname, "uploads"))));
 app.use("/api/users/auth", authRoutes);
 // Register Routes
 app.use("/api/cars", carRoutes); // ✅ Register the cars API
+
+app.use('/api/bookings', BookingRoutes);
+app.use('/api/notifications', NotificationRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚗 Car Rental Backend is Running!");
