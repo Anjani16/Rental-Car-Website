@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 //import ForgotPassword from './ForgotPassword'
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL; // Your backend server URL
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555"; // Your backend server URL
 
 const Login = () => {
   const [email, setEmail] = useState('');

@@ -223,7 +223,8 @@ const Catalog = () => {
                     alt={`${car.brand} ${car.model}`}
                     className="car-image"
                     onError={(e) => {
-                      e.target.src = `${API_BASE_URL}/default-car-image.jpg`;
+                      e.target.onerror = null;
+                      e.target.src = `${API_BASE_URL}/uploads/default-car-image.jpg`;
                     }}
                   />
                 </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ManageCars.css";
 import { fetchUserCars } from '../api'; // Import the fetchUserCars function
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL;
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 const ManageCars = () => {
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
@@ -81,7 +81,7 @@ const ManageCars = () => {
         <td>
           {car.image ? (
             <img 
-      src={`${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}/${car.image.replace(/^\//, '')}`} 
+      src={`${API_BASE_URL.replace(/\/$/, '')}/${car.image.replace(/^\//, '')}`} 
       alt={`${car.brand} ${car.model}`} 
       className="car-imageOwner" 
     />

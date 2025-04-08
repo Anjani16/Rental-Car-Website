@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './Header'; // Reusable header component
 import '../styles/registration.css'; // CSS for the registration page
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL; // Your backend server URL
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555"; // Your backend server URL
 
 const Registration = () => {
   const location = useLocation();
