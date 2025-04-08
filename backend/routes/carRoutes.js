@@ -245,12 +245,21 @@ router.post("/:id/cart", async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
+    console.log("Decoded user ID : ", userId);
+
 
     const car = await Car.findById(id);
+    console.log("Car found : ", car);
+    console.log(car.cartedBy);
     if (!car) return res.status(404).json({ message: "Car not found" });
 
     // Check if already in cart
-    const existingItem = car.cartedBy.find(item => item.userId.toString() === userId);
+    console.log("Current cartedBy array:", car.cartedBy);
+
+    const existingItem = car.cartedBy.find(item =>
+      item.userId && item.userId.toString() === userId
+    );
+    // const existingItem = car.cartedBy.find(item => item.userId.toString() === userId);
     if (existingItem) {
       return res.status(400).json({ message: "Car already in cart" });
     }
@@ -261,6 +270,7 @@ router.post("/:id/cart", async (req, res) => {
 
     res.json({ message: "Added to cart successfully!", car });
   } catch (error) {
+    console.log("error message in add cart : ", error.message);
     res.status(500).json({ error: error.message });
   }
 });
@@ -281,7 +291,7 @@ router.put("/:id/cart", async (req, res) => {
     if (!car) return res.status(404).json({ message: "Car not found" });
 
     // Find and update the cart item
-    const cartItem = car.cartedBy.find(item => item.userId.toString() === userId);
+    const cartItem = car.cartedBy.find(item => item.userId?.toString() === userId);
     if (!cartItem) {
       return res.status(404).json({ message: "Cart item not found" });
     }
@@ -310,7 +320,7 @@ router.delete("/:id/cart", async (req, res) => {
     if (!car) return res.status(404).json({ message: "Car not found" });
 
     // Remove from cart
-    car.cartedBy = car.cartedBy.filter(item => item.userId.toString() !== userId);
+    car.cartedBy = car.cartedBy.filter(item => item.userId?.toString() !== userId);
     await car.save();
 
     res.json({ message: "Removed from cart successfully!", car });
@@ -333,7 +343,7 @@ router.get("/cart", async (req, res) => {
 
     // Format the response to include hours
     const cartItems = cars.map(car => {
-      const cartItem = car.cartedBy.find(item => item.userId.toString() === userId);
+      const cartItem = car.cartedBy.find(item => item.userId?.toString() === userId);
       return {
         ...car.toObject(),
         hours: cartItem.hours
