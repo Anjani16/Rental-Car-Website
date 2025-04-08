@@ -1,84 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { fetchNotifications } from '../api';
-import { FaBell, FaCheck } from 'react-icons/fa';
-import '../styles/Notifications.css';
+// backend/models/Notification.js
+import mongoose from "mongoose";
 
-const Notifications = () => {
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const notificationSchema = new mongoose.Schema({
+  userId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "User", 
+    required: true 
+  },
+  message: { 
+    type: String, 
+    required: true 
+  },
+  type: { 
+    type: String, 
+    enum: ["booking_request", "booking_approved", "booking_rejected"], 
+    required: true 
+  },
+  relatedBooking: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "Booking" 
+  },
+  read: { 
+    type: Boolean, 
+    default: false 
+  },
+}, { timestamps: true });
 
-  useEffect(() => {
-    const loadNotifications = async () => {
-      try {
-        const data = await fetchNotifications();
-        setNotifications(data);
-      } catch (err) {
-        setError('Failed to load notifications');
-        console.error('Error loading notifications:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadNotifications();
-  }, []);
-
-  const handleMarkAsRead = async (notificationId) => {
-    try {
-      // You would need to implement markAsRead in your API
-      // await markNotificationAsRead(notificationId);
-      setNotifications(prev => 
-        prev.map(n => 
-          n._id === notificationId ? { ...n, read: true } : n
-        )
-      );
-    } catch (err) {
-      console.error('Error marking notification as read:', err);
-    }
-  };
-
-  if (loading) {
-    return <div className="loading-notifications">Loading notifications...</div>;
-  }
-
-  if (error) {
-    return <div className="error-notifications">{error}</div>;
-  }
-
-  return (
-    <div className="notifications-container">
-      <h2><FaBell /> Notifications</h2>
-      
-      {notifications.length === 0 ? (
-        <p className="no-notifications">No notifications yet</p>
-      ) : (
-        <ul className="notifications-list">
-          {notifications.map(notification => (
-            <li 
-              key={notification._id} 
-              className={`notification-item ${notification.read ? 'read' : 'unread'}`}
-            >
-              <div className="notification-content">
-                <p>{notification.message}</p>
-                <small>
-                  {new Date(notification.createdAt).toLocaleString()}
-                </small>
-              </div>
-              {!notification.read && (
-                <button 
-                  className="mark-read-button"
-                  onClick={() => handleMarkAsRead(notification._id)}
-                  title="Mark as read"
-                >
-                  <FaCheck />
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
-
-export default Notifications;
+export default mongoose.model("Notification", notificationSchema);
