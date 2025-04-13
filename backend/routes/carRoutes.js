@@ -6,6 +6,7 @@ import fs from "fs";
 import { body, validationResult } from "express-validator";
 import Car from "../models/Car.js";
 import { fileURLToPath } from "url";
+import User from "../models/User.js"; // Import the User model
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -95,6 +96,92 @@ router.get("/user", async (req, res) => {
   }
 });
 
+router.get("/wishlist", async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId; // Extract user ID
+
+    // Fetch wishlisted cars
+    const wishlistedCars = await Car.find({ wishlistedBy: userId });
+
+    // Fetch owner details for each car
+    const carsWithOwnerDetails = await Promise.all(
+      wishlistedCars.map(async (car) => {
+        const owner = await User.findById(car.userId, "firstName phoneNumber");
+        return {
+          ...car._doc, // Spread car details
+          owner:{
+            firstName: owner.firstName,
+            phoneNumber: owner.phoneNumber,
+          },
+        };
+      })
+    );
+
+    res.json(carsWithOwnerDetails); // Send formatted response
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/cart", async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token provided" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    // Find all cars where cartedBy includes the userId
+    const cars = await Car.find({ "cartedBy.userId": userId });
+
+    // Format the response to include hours
+    const cartItems = cars.map(car => {
+      const cartItem = car.cartedBy.find(item => item.userId?.toString() === userId);
+      return {
+        ...car.toObject(),
+        hours: cartItem.hours
+      };
+    });
+
+    res.json(cartItems);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fetch a car by its ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const car = await Car.findById(id);
+
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    // Fetch owner details
+    const owner = await User.findById(car.userId, "firstName phoneNumber");
+
+    res.json({
+      ...car._doc, // Spread the car details
+      owner: {
+        firstName: owner.firstName,
+        phoneNumber: owner.phoneNumber,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -133,7 +220,6 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-import User from "../models/User.js"; // Import the User model
 
 // Fetch all cars (for renters to view)
 router.get("/", async (req, res) => {
@@ -198,39 +284,7 @@ router.post("/:id/wishlist", async (req, res) => {
   }
 });
 
-router.get("/wishlist", async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split(" ")[1];
 
-    if (!token) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.userId; // Extract user ID
-
-    // Fetch wishlisted cars
-    const wishlistedCars = await Car.find({ wishlistedBy: userId });
-
-    // Fetch owner details for each car
-    const carsWithOwnerDetails = await Promise.all(
-      wishlistedCars.map(async (car) => {
-        const owner = await User.findById(car.userId, "firstName phoneNumber");
-        return {
-          ...car._doc, // Spread car details
-          owner:{
-            firstName: owner.firstName,
-            phoneNumber: owner.phoneNumber,
-          },
-        };
-      })
-    );
-
-    res.json(carsWithOwnerDetails); // Send formatted response
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 
 // Add to cart
@@ -330,30 +384,6 @@ router.delete("/:id/cart", async (req, res) => {
 });
 
 // Get user's cart items with hours
-router.get("/cart", async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided" });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.userId;
-
-    // Find all cars where cartedBy includes the userId
-    const cars = await Car.find({ "cartedBy.userId": userId });
-
-    // Format the response to include hours
-    const cartItems = cars.map(car => {
-      const cartItem = car.cartedBy.find(item => item.userId?.toString() === userId);
-      return {
-        ...car.toObject(),
-        hours: cartItem.hours
-      };
-    });
-
-    res.json(cartItems);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 // Other routes (update, delete, etc.) remain unchanged
 export default router;

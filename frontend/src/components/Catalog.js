@@ -154,6 +154,7 @@ const Catalog = () => {
   const handleBookingSubmit = async (bookingData) => {
     try {
       await submitBooking(bookingData);
+      console.log("booking data", bookingData);
       toast.success('Booking request submitted successfully!');
       setIsBookingModalOpen(false);
       navigate('/renter/history');
@@ -253,7 +254,7 @@ const Catalog = () => {
                     className="learn-more-button"
                     onClick={() => handleLearnMore(car)}
                   >
-                    Learn More
+                    More Info
                   </button>
                 </div>
               </div>

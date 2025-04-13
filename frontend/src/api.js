@@ -234,6 +234,17 @@ export const fetchCarById = async (carId) => {
   }
 };
 
+export const getBookingsByRenter = async () => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${API_BASE_URL}/api/bookings/renterhistory`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+
 // Add to your api.js
 export const submitBooking = async (bookingData) => {
   try {
@@ -252,6 +263,23 @@ export const submitBooking = async (bookingData) => {
     throw error;
   }
 };
+
+// GET /api/bookings/user
+export const getMyBookings = async () => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_BASE_URL}/api/bookings/user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch bookings');
+  }
+
+  return await response.json(); // returns all bookings for user (renter or owner)
+};
+
 
 export const sendNotificationToOwner = async (ownerId, notification) => {
   try {

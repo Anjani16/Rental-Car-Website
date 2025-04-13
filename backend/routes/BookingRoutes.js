@@ -1,6 +1,8 @@
 import express from 'express';
 import Booking from '../models/Booking.js';
 import Car from '../models/Car.js';
+import User from '../models/User.js';
+import { BookingStatus, NotificationTypes } from '../Constant.js';
 import Notification from '../models/Notification.js';
 import jwt from 'jsonwebtoken';
 
@@ -35,21 +37,29 @@ router.post('/', async (req, res) => {
       endTime,
       hours,
       totalPrice,
-      status: 'pending'
+      status: BookingStatus.PENDING
     });
 
     await booking.save();
+
+    await Car.findByIdAndUpdate(carId, {
+      $pull: { cartedBy: { userId: renterId } }
+    });
 
     // Create notification for owner
     const renter = await User.findById(renterId);
     await Notification.create({
       userId: car.userId,
       message: `${renter.username} requested to book your ${car.brand} ${car.model}`,
-      type: 'booking_request',
+      type: NotificationTypes.REQUEST,
       relatedBooking: booking._id
     });
 
-    res.status(201).json(booking);
+    res.status(201).json({
+      message: 'Booking successfully created!',
+      booking,
+    });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -77,6 +87,28 @@ router.get('/user', async (req, res) => {
   }
 });
 
+// Get renter's booking history (renter only)
+router.get('/renterhistory', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'No token provided' });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const renterId = decoded.userId;
+
+    // Fetch only bookings where the logged-in user is the renter
+    const bookings = await Booking.find({ renter: renterId })
+      .populate('car', 'brand model image price') // Populate car details
+      .populate('owner', 'username email') // Populate owner details
+      .sort({ createdAt: -1 }); // Sort by the most recent booking first
+
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 // Update booking status (approve/reject)
 router.put('/:id/status', async (req, res) => {
   try {
@@ -89,14 +121,23 @@ router.put('/:id/status', async (req, res) => {
     const userId = decoded.userId;
 
     const booking = await Booking.findById(id);
+    await booking.populate('car', 'brand model');
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
 
     // Only owner can update status
     if (booking.owner.toString() !== userId) {
       return res.status(403).json({ message: 'Not authorized' });
     }
+    if (!carId || !startDate || !endDate || !startTime || !endTime || !hours || !totalPrice) {
+      return res.status(400).json({ message: 'Missing required booking fields' });
+    }
 
     booking.status = status;
+
+    const validStatuses = ['approved', 'rejected'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status update' });
+    }
     await booking.save();
 
     // Create notification for renter
@@ -109,6 +150,7 @@ router.put('/:id/status', async (req, res) => {
 
     res.json(booking);
   } catch (error) {
+    console.error('Booking creation failed:', error);
     res.status(500).json({ error: error.message });
   }
 });

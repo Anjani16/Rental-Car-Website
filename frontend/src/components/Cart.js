@@ -141,11 +141,17 @@ const Cart = () => {
                 >
                   <FaTimes /> Remove from cart
                 </button>
-                <button
+                {/* <button
                   className="learn-more-button"
                   onClick={() => handleLearnMore(car)}
                 >
-                  Learn More
+                  More Info
+                </button> */}
+                <button 
+                  className="book-now-button"
+                  onClick={() => navigate(`/renter/booking/${car._id}`)}
+                >
+                  Book Now
                 </button>
               </div>
             </div>
@@ -202,7 +208,7 @@ const Cart = () => {
               </button>
               <button 
                 className="book-now-button"
-                onClick={() => navigate(`/booking/${selectedCar._id}`)}
+                onClick={() => navigate(`/renter/booking/${selectedCar._id}`)}
               >
                 Book Now
               </button>

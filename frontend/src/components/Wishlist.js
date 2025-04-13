@@ -181,7 +181,7 @@ const Wishlist = () => {
                     className="learn-more-button"
                     onClick={() => handleLearnMore(car)}
                   >
-                    Learn More
+                    More Info
                   </button>
                 </div>
               </div>

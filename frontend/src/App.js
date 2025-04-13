@@ -23,6 +23,7 @@ import AddCar from './components/AddCar';
 import UpdateCar from './components/UpdateCar';
 import Wishlist from './components/Wishlist';
 import Cart from './components/Cart';
+import BookingPage from './components/BookingPage';
 
  
 const App = () => {
@@ -58,11 +59,13 @@ const App = () => {
           <Route index element={<RenterDashboard />} /> {/* Default owner page */}
           <Route path="catalog" element={<Catalog />} />
           <Route path="notifications" element={<RenterNotifications />} />
-          <Route path="history" element={<RenterHistory />} />
+          <Route path="history" element={<RenterHistory/>} />
           <Route path="wishlist" element={<Wishlist/>} />
           <Route path="cart" element={<Cart/>} />
           <Route path="profile" element={<RenterProfile />}/>
           <Route path="profile/renter-info" element={<RenterInfo />} /> {/* Account Info page */}
+          <Route path="booking/:id" element={<BookingPage/>} />
+
         </Route>
 
         <Route path="/update-car" element={<UpdateCar />} />
