@@ -20,7 +20,7 @@ const BookingPage = () => {
         setCar(res.data);
       } catch (err) {
         console.error('Failed to fetch car details', err);
-        navigate('/cart');
+        navigate('/renter/cart');
       } finally {
         setLoading(false);
       }

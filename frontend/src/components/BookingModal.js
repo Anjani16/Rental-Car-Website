@@ -86,9 +86,15 @@ const BookingModal = ({ car, onClose }) => {
             />
           </div>
 
-          <div className="summary-card">
+          {/* <div className="summary-card">
             <p><FaClock /> <strong>Duration:</strong> {hours} hour(s)</p>
             <p><FaMoneyBillWave /> <strong>Total Price:</strong> ${totalPrice.toFixed(2)}</p>
+          </div> */}
+
+            {/* ✅ Summary goes here */}
+          <div className="summary-card">
+            <p><FaClock /> <strong>Duration:</strong> {hours > 0 ? `${hours} hour(s)` : "—"}</p>
+            <p><FaMoneyBillWave /> <strong>Total Price:</strong> {hours > 0 ? `$${totalPrice.toFixed(2)}` : "—"}</p>
           </div>
 
           <button type="submit" className="proceed-button">

@@ -48,13 +48,14 @@ router.post('/', async (req, res) => {
 
     // Create notification for owner
     const renter = await User.findById(renterId);
-    await Notification.create({
+    console.log(car);
+    const notification = new  Notification({
       userId: car.userId,
       message: `${renter.username} requested to book your ${car.brand} ${car.model}`,
       type: NotificationTypes.REQUEST,
       relatedBooking: booking._id
     });
-
+    await notification.save();
     res.status(201).json({
       message: 'Booking successfully created!',
       booking,
@@ -78,7 +79,7 @@ router.get('/user', async (req, res) => {
       $or: [{ renter: userId }, { owner: userId }]
     })
       .populate('car', 'brand model image price')
-      .populate('renter', 'username email')
+      .populate('renter', 'firstName phoneNumber email')
       .sort({ createdAt: -1 });
 
     res.json(bookings);
@@ -128,7 +129,7 @@ router.put('/:id/status', async (req, res) => {
     if (booking.owner.toString() !== userId) {
       return res.status(403).json({ message: 'Not authorized' });
     }
-    if (!carId || !startDate || !endDate || !startTime || !endTime || !hours || !totalPrice) {
+    if (!booking.car._id || !booking.startDate || !booking.endDate || !booking.startTime || !booking.endTime || !booking.hours || !booking.totalPrice) {
       return res.status(400).json({ message: 'Missing required booking fields' });
     }
 
@@ -144,7 +145,10 @@ router.put('/:id/status', async (req, res) => {
     await Notification.create({
       userId: booking.renter,
       message: `Your booking for ${booking.car.brand} ${booking.car.model} has been ${status}`,
-      type: `booking_${status}`,
+      type: status === BookingStatus.APPROVED
+        ? NotificationTypes.APPROVED
+        : NotificationTypes.REJECTED,
+      // type: `booking_${status}`,
       relatedBooking: booking._id
     });
 

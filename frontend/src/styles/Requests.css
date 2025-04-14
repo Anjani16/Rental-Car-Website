@@ -1,0 +1,57 @@
+.requests-container {
+    padding: 20px;
+  }
+  
+  .requests-heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: auto;
+  }
+  
+  .requests-table th,
+  .requests-table td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  .requests-table th {
+    background-color: #f5f5f5;
+  }
+  
+  .btn-approve {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 4px;
+  }
+  
+  .btn-reject {
+    background-color: #f44336;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  @media (max-width: 768px) {
+    .requests-table th,
+    .requests-table td {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  

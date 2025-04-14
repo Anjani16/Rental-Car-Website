@@ -2,8 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { getUserIdFromToken, getBookingsByRenter } from '../api';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Catalog.css';
+import '../styles/RentalHistory.css'; // Optional: external CSS
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
+
+const formatDateTime = (dateStr, timeStr) => {
+  const date = new Date(dateStr);
+  const [hour, minute] = timeStr.split(':');
+  date.setHours(hour);
+  date.setMinutes(minute);
+  return date.toLocaleString(); // You can customize this
+};
 
 const RentalHistory = () => {
   const [rentalHistory, setRentalHistory] = useState([]);
@@ -73,13 +82,21 @@ const RentalHistory = () => {
 
               <div className="car-details">
                 <h3>{bookedCar.car.brand} {bookedCar.car.model}, {bookedCar.car.year}</h3>
-                {/* <p className="car-price">${bookedCar.car.price}/hr</p> */}
+                <p><strong>Start:</strong> {formatDateTime(bookedCar.startDate, bookedCar.startTime)}</p>
+                <p><strong>End:</strong> {formatDateTime(bookedCar.endDate, bookedCar.endTime)}</p>
                 <p className="car-price">
                     <strong>Total Price:</strong> ${bookedCar.totalPrice || "Unknown"}
                   </p>
-                <p className="car-status">
+                {/* <p className={`car-status status-${bookedCar.status?.toLowerCase()}`}>
                     <strong>Booking Status:</strong> {bookedCar.status || "Unknown"}
-                  </p>
+                  </p> */}
+
+                <p className="car-status">
+                  <strong>Booking Status:</strong>{" "}
+                  <span className={`status-${bookedCar.status?.toLowerCase()}`}>
+                    {bookedCar.status || "Unknown"}
+                  </span>
+                </p>
               </div>
 
               <div className="car-buttons">
@@ -111,10 +128,20 @@ const RentalHistory = () => {
             {/* <p>Mileage: {selectedCar.car.mileage}</p> */}
             <p>Price: ${selectedCar.car.price}/hr</p>
             <p>Total Price: ${selectedCar.totalPrice}/hr</p>
-            <p className="car-status">
+            <p><strong>Start:</strong> {formatDateTime(selectedCar.startDate, selectedCar.startTime)}</p>
+            <p><strong>End:</strong> {formatDateTime(selectedCar.endDate, selectedCar.endTime)}</p>
+            {/* <p className={`car-status status-${selectedCar.status?.toLowerCase()}`}>
               <strong>Booking Status:</strong> {selectedCar.status || "Unknown"}
-            </p>
+            </p> */}
             {/* <p>Availability: {selectedCar.availability}</p> */}
+
+            <p className="car-status">
+              <strong>Booking Status:</strong>{" "}
+              <span className={`status-${selectedCar.status?.toLowerCase()}`}>
+                {selectedCar.status || "Unknown"}
+              </span>
+            </p>
+
             <div className="owner-details">
               <h3>Owner Details</h3>
               <p>Email: {selectedCar.owner?.email || "N/A"}</p>
@@ -128,9 +155,10 @@ const RentalHistory = () => {
                 // >
                 //   Book Again
                 // </button>
+                
                 <button 
                 className="book-now-button"
-                onClick={() => navigate(`/renter/booking/${selectedCar._id}`)}
+                onClick={() => navigate(`/renter/booking/${selectedCar.car._id}`)}
                 >
                   Book Again
                 </button>
