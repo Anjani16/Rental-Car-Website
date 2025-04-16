@@ -5,11 +5,15 @@ import {
   getUserIdFromToken, 
   fetchCartItems, 
   addToCart, 
-  removeFromCart 
+  removeFromCart,
+  submitBooking
 } from '../api';
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import '../styles/Catalog.css';
+import BookingModal from "./BookingModal";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -23,6 +27,8 @@ const Wishlist = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const userId = getUserIdFromToken();
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,6 +118,20 @@ const Wishlist = () => {
       setIsCartLoading(false);
     }
   };
+
+  
+    const handleBookingSubmit = async (bookingData) => {
+      try {
+        await submitBooking(bookingData);
+        console.log("booking data", bookingData);
+        toast.success('Booking request submitted successfully!');
+        setIsBookingModalOpen(false);
+        navigate('/renter/history');
+      } catch (error) {
+        console.error('Error submitting booking:', error);
+        toast.error('Failed to submit booking request');
+      }
+    };
 
   if (isLoading) {
     return <div className="loading-message">Loading wishlist...</div>;
@@ -227,7 +247,10 @@ const Wishlist = () => {
               </button>
               <button 
                 className="book-now-button"
-                onClick={() => navigate(`/booking/${selectedCar._id}`)}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setIsBookingModalOpen(true);
+                }}
               >
                 Book Now
               </button>
@@ -239,6 +262,14 @@ const Wishlist = () => {
             </div>
           </div>
         </div>
+      )}
+
+{isBookingModalOpen && selectedCar && (
+        <BookingModal
+          car={selectedCar}
+          onClose={() => setIsBookingModalOpen(false)}
+          onSubmit={handleBookingSubmit}
+        />
       )}
     </div>
   );
