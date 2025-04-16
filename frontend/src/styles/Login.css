@@ -24,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%; /* Ensure buttons take full width of the parent */
-  max-width: 550px; /* Increase max-width to match the form */
+  max-width: 400px; /* Increase max-width to match the form */
   margin-bottom: 5px; /* Add small gap between buttons and form */
   gap: 3px; /* Add small gap between buttons */
   padding: 0; /* Remove padding to align buttons with form */
@@ -47,7 +47,7 @@
 
 .login-buttons button.active {
   flex: 2; /* Selected button takes more space */
-  background-color: #B7DBEF; /* Change to #B7DBEF when selected */
+  background-color: #50BBF6; /* Change to #B7DBEF when selected */
   border-color: #ccc; /* Light border color for active button */
   color: black; /* Adjust text color for better visibility */
 }
@@ -55,7 +55,7 @@
 /* Login Container (Middle Highlighted Form) */
 .login-container {
   width: 100%; /* Ensure form takes full width of its container */
-  max-width: 550px; /* Increase max-width for the form */
+  max-width: 400px; /* Increase max-width for the form */
   padding: 20px;
   text-align: center;
   border: 2px solid #ccc; /* Light border color for the form container */
@@ -197,7 +197,7 @@ body {
 
 /* Header */
 .app-header {
-  background-color: #B7DBEF; /* Background color for the header */
+  background-color: #3E86CE; /* Background color for the header */
   padding: 15px 20px; /* Padding for the header */
   width: 100%; /* Full width */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
@@ -233,5 +233,38 @@ body {
   text-decoration: underline; /* Underline on hover to show it's clickable */
   color: #0056b3; /* Darker color on hover */
 }
+
+/* Wrap image and login container side by side */
+.login-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Image section */
+.login-image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-car-logo {
+  max-width: 90%;
+  height: auto;
+}
+
+/* Adjust login-page to align right */
+.login-page {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  max-width: none;
+  margin-left: 0;
+}
+
 
 

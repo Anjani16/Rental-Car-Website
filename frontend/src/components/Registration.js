@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Header from './Header'; // Reusable header component
-import '../styles/registration.css'; // CSS for the registration page
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555"; // Your backend server URL
+import Header from './Header';
+import '../styles/registration.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
 const Registration = () => {
   const location = useLocation();
@@ -34,20 +37,44 @@ const Registration = () => {
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      alert('Invalid email format. Please enter a valid email address.');
+      toast.error('Invalid email format. Please enter a valid email address.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
 
     // Phone number validation regex
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(formData.phoneNumber)) {
-      alert('Invalid phone number. Please enter a 10-digit phone number.');
+      toast.error('Invalid phone number. Please enter a 10-digit phone number.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
 
     // Validate password and confirm password
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      toast.error('Passwords do not match', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
   
@@ -63,19 +90,55 @@ const Registration = () => {
       const data = await response.json();
   
       if (response.ok) {
-        alert('Registration successful!');
-        navigate('/login'); // Redirect to the login page after successful registration
+        toast.success('Registration successful!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        navigate('/login');
       } else {
-        alert(data.message || 'Registration failed. Please try again.');
+        toast.error(data.message || 'Registration failed. Please try again.', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (error) {
       console.error('Error during registration:', error);
-      alert('An error occurred during registration');
+      toast.error('An error occurred during registration', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
   return (
     <div className="registration-wrapper">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      
       {/* Header */}
       <Header />
 
@@ -87,6 +150,19 @@ const Registration = () => {
       {/* Registration Form */}
       <div className="registration-container">
         <form onSubmit={handleSubmit}>
+
+            {/* User ID */}
+            <div className="input-field">
+            <label htmlFor="userId">User ID*</label>
+            <input
+              type="text"
+              id="userId"
+              name="userId"
+              value={formData.userId}
+              onChange={handleChange}
+              required
+            />
+          </div>
           {/* First Name */}
           <div className="input-field">
             <label htmlFor="firstName">First Name*</label>
@@ -138,18 +214,6 @@ const Registration = () => {
             />
           </div>
 
-          {/* User ID */}
-          <div className="input-field">
-            <label htmlFor="userId">User ID*</label>
-            <input
-              type="text"
-              id="userId"
-              name="userId"
-              value={formData.userId}
-              onChange={handleChange}
-              required
-            />
-          </div>
 
           {/* Password */}
           <div className="input-field">
