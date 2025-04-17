@@ -74,3 +74,20 @@
     text-align: center;
     padding: 20px;
   }
+
+  .notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .notification-card {
+    background-color: rgba(173, 216, 230, 0.2); /* soft blue */
+    border-left: 4px solid #007BFF;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
