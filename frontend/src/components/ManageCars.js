@@ -107,7 +107,10 @@ const ManageCars = () => {
         <td>${car.price}</td>
 
         {/* Availability Column */}
-        <td>{car.availability}</td>
+        <td className={`availability ${car.availability.toLowerCase() === 'available' ? 'available' : 'unavailable'}`}>
+  {car.availability}
+</td>
+
 
         {/* Actions Column */}
         <td className="actions-column">

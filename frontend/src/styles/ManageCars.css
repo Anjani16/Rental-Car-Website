@@ -140,3 +140,12 @@
     background-color: #E7E7E7;
     opacity: 0.8;
   }
+
+  /* Availability Status Styling */
+.availability {
+  font-weight: bold;
+}
+
+.unavailable {
+  color: #dc3545; /* Red for unavailable cars */
+}
