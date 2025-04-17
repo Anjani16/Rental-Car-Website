@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import '../styles/Requests.css'; // reuse or create new if needed
+import '../styles/Notifications.css'; // reuse or create new if needed
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5555';
 
