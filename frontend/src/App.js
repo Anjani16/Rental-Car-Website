@@ -1,6 +1,6 @@
-import React from 'react';
+import {ThemeContext} from './components/ThemeContext'; // Import ThemeProvider
+import React, { useContext }from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ThemeProvider from './components/ThemeContext'; // Import ThemeProvider
 import Login from './components/Login';
 import Registration from './components/Registration';
 import OwnerDashboard from './components/OwnerDashboard';
@@ -27,9 +27,13 @@ import BookingPage from './components/BookingPage';
 
  
 const App = () => {
-  return (
-    <ThemeProvider>
+  const { theme, toggleTheme } = useContext(ThemeContext); // Use the theme context
+
+  return (      
     <Router>
+            <button className="theme-toggle-button" onClick={toggleTheme}>
+        {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+      </button>
       <Routes>
         {/* Default route to Login */}
         <Route path="/" element={<Login />} />
@@ -76,7 +80,6 @@ const App = () => {
         <Route path="/" element={<ManageCars />} />
       </Routes>
     </Router>
-    </ThemeProvider>
   );
 };
 

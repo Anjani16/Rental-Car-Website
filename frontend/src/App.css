@@ -36,3 +36,113 @@
     transform: rotate(360deg);
   }
 }
+
+/* Global Body Styling */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light Theme */
+body.light {
+  --bg-color: white;
+  --text-color: black;
+}
+
+/* Dark Theme */
+body.dark {
+  --bg-color: #1e1e1e;
+  --text-color: white;
+}
+
+/* Header */
+.app-header {
+  background-color: var(--bg-color);
+  padding: 0;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* App Title */
+.app-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-color);
+  padding: 15px 20px;
+}
+
+/* Navigation Tabs */
+.header-nav ul li {
+  font-size: 16px;
+  cursor: pointer;
+  padding: 15px 20px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+/* Profile Icon */
+.profile-icon {
+  cursor: pointer;
+  padding: 15px 20px;
+  transition: all 0.3s;
+}
+
+/* Dropdown */
+.dropdown {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Adjust the dropdown items to match the theme */
+.dropdown-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s;
+}
+
+/* Hover Effect */
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+  border: 1px solid #000;
+}
+
+/* Sub-dropdown */
+.sub-dropdown {
+  background-color: var(--bg-color);
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hamburger menu visibility on small screens */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  .header-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #B7DBEF;
+    width: 100%;
+  }
+
+  .header-nav.open {
+    display: flex;
+  }
+}
+

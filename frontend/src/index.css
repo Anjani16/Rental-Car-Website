@@ -11,3 +11,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark {
+  background-color: #121212;
+  color:  #121212;
+}
+
+/* Optional: Button styling */
+.theme-toggle-button {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 999;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+body.dark .theme-toggle-button {
+  background-color: #bb86fc;
+  color: black;
+}
