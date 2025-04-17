@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { fetchCartItems, removeFromCart, updateCartItem } from "../api";
+import { fetchCartItems, removeFromCart, updateCartItem, submitBooking } from "../api";
 import { FaTimes, FaShoppingCart, FaPlus, FaMinus } from "react-icons/fa";
 import "../styles/Catalog.css";
 import { useNavigate } from "react-router-dom";
+import BookingModal from "./BookingModal";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -12,6 +15,7 @@ const Cart = () => {
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,6 +77,19 @@ const Cart = () => {
       return total + (item.price * item.hours);
     }, 0).toFixed(2);
   };
+
+  const handleBookingSubmit = async (bookingData) => {
+        try {
+          await submitBooking(bookingData);
+          console.log("booking data", bookingData);
+          toast.success('Booking request submitted successfully!');
+          setIsBookingModalOpen(false);
+          navigate('/renter/history');
+        } catch (error) {
+          console.error('Error submitting booking:', error);
+          toast.error('Failed to submit booking request');
+        }
+      };
 
   if (loading) return <div className="loading-message">Loading cart...</div>;
 
@@ -208,7 +225,10 @@ const Cart = () => {
               </button>
               <button 
                 className="book-now-button"
-                onClick={() => navigate(`/renter/booking/${selectedCar._id}`)}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setIsBookingModalOpen(true);
+                }}
               >
                 Book Now
               </button>
@@ -220,6 +240,13 @@ const Cart = () => {
             </div>
           </div>
         </div>
+      )}
+      {isBookingModalOpen && selectedCar && (
+        <BookingModal
+          car={selectedCar}
+          onClose={() => setIsBookingModalOpen(false)}
+          onSubmit={handleBookingSubmit}
+        />
       )}
     </div>
   );
