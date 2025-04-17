@@ -10,7 +10,6 @@
     display: flex;
     justify-content: center;  /* Center horizontally */
     align-items: center;      /* Center vertically */
-    height: 30vh;             /* Adjusted height to 40% of the viewport height */
     width: 40%;               /* Adjusted width to 50% of the viewport width */
     background-color: #fff;   /* White background for the content */
     padding: 30px;

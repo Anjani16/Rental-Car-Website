@@ -175,6 +175,23 @@
   border: 1px solid #000; /* Black border for highlighted option */
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+  margin-left: 5px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
 /* Show hamburger menu on smaller screens */
 @media (max-width: 768px) {
   .hamburger-menu {

@@ -5,6 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CarLogo from '../images/CarLogo.png';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import HeaderLogo from '../images/HeaderLogo.png';
+
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -94,9 +96,12 @@ const Login = () => {
 
       <div className="login-page">
         <div className="login-wrapper">
-          <header className="app-header">
-            <h1>Car Rental Management System</h1>
-          </header>
+        <header class="app-header">
+  <div class="header-left">
+    <img src={HeaderLogo} alt="Logo" class="logo" />
+    <h1 class="title">Car Rental Management System</h1>
+  </div>
+</header>
 
           <h2 className="login-heading">Login</h2>
 

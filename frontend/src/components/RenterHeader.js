@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaUserCircle, FaBars, FaHeart, FaShoppingCart } from 'react-icons/fa'; // Added Wishlist and Cart icons
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/RenterHeader.css';
+import HeaderLogo from '../images/HeaderLogo.png';
 
 const RenterHeader = () => {
   const navigate = useNavigate();
@@ -158,7 +159,10 @@ const RenterHeader = () => {
   return (
     <header className="app-header">
       {/* Left Side: App Title */}
-      <h1>Car Rental Management System</h1>
+      <div class="header-left">
+         <img src={HeaderLogo} alt="Logo" class="logo" />
+         <h1 class="title">Car Rental Management System</h1>
+       </div>
 
       {/* Hamburger Menu (Visible on Small Screens) */}
       <div className="hamburger-menu" onClick={toggleMenu}>

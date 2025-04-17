@@ -207,6 +207,11 @@ body {
   z-index: 1000; /* Ensure the header is above other content */
 }
 
+.header-logo {
+height:50px;
+width:auto;
+}
+
 .app-header h1 {
   margin: 0; /* Remove default margin */
   font-size: 24px; /* Adjust font size */
@@ -265,6 +270,29 @@ body {
   max-width: none;
   margin-left: 0;
 }
+
+.header {
+  background-color: #f8f9fa; /* Example background */
+  padding: 10px 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+  margin-left: 5px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
 
 
 
