@@ -1,46 +1,82 @@
-// frontend/components/Notifications.js
 import React, { useEffect, useState } from 'react';
-import { fetchNotifications } from '../api';
+import axios from 'axios';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import '../styles/Requests.css'; // Optional: external CSS
 
-const Notifications = () => {
-  const [notifications, setNotifications] = useState([]);
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5555';
+
+const Requests = () => {
+  const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchRequests = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`${API_BASE_URL}/api/bookings/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setRequests(res.data);
+    } catch (error) {
+      toast.error('Failed to fetch booking requests');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusChange = async (bookingId, newStatus) => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.put(
+        `${API_BASE_URL}/api/bookings/${bookingId}/status`,
+        { status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success(res.data.message);
+      fetchRequests(); // refresh
+    } catch (error) {
+      toast.error('Failed to update booking status');
+    }
+  };
+
   useEffect(() => {
-    const loadNotifications = async () => {
-      try {
-        const data = await fetchNotifications();
-        setNotifications(data);
-      } catch (error) {
-        toast.error('Failed to load notifications');
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadNotifications();
+    fetchRequests();
   }, []);
 
-  if (loading) return <div>Loading notifications...</div>;
+  if (loading) return <div className="loading-message">Loading booking requests...</div>;
 
   return (
-    <div className="notifications">
-      <h2>Notifications</h2>
-      {notifications.length === 0 ? (
-        <p>No notifications yet</p>
+    <div className="requests-container" style={{ paddingTop: '80px' }}>
+      <h2 className="requests-heading">Notifications</h2>
+      {requests.length === 0 ? (
+        <p style={{color:"red"}}>No Notifcations yet</p>
       ) : (
-        <ul className="notification-list">
-          {notifications.map(notification => (
-            <li key={notification._id} className={`notification-item ${notification.read ? 'read' : 'unread'}`}>
-              <p>{notification.message}</p>
-              <small>{new Date(notification.createdAt).toLocaleString()}</small>
-            </li>
-          ))}
-        </ul>
+        <div className="table-wrapper">
+          <table className="requests-table">
+            <thead>
+              <tr>
+                <th>Car</th>
+                <th>Renter</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Total ($)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requests.map((req) => (
+                <tr key={req._id}>
+                  <td>{req.car?.brand} {req.car?.model}</td>
+                  <td>{req.renter?.firstName || 'Unknown'}</td>
+                  <td>{req.startDate} {req.startTime}</td>
+                  <td>{req.endDate} {req.endTime}</td>
+                  <td>{req.totalPrice}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
 };
 
-export default Notifications;
+export default Requests;
