@@ -3,6 +3,8 @@ import { FaUserCircle, FaBars } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 import '../styles/OwnerHeader.css';
+import HeaderLogo from '../images/HeaderLogo.png';
+
 
 const OwnerHeader = () => {
   const navigate = useNavigate();
@@ -159,7 +161,10 @@ const OwnerHeader = () => {
   return (
     <header className="app-header">
       {/* Left Side: App Title */}
-      <h1>Car Rental Management System</h1>
+      <div class="header-left">
+         <img src={HeaderLogo} alt="Logo" class="logo" />
+         <h1 class="title">Car Rental Management System</h1>
+       </div>
 
       {/* Hamburger Menu (Visible on Small Screens) */}
       <div className="hamburger-menu" onClick={toggleMenu}>

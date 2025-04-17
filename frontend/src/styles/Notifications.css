@@ -124,3 +124,23 @@
     overflow-y: auto;
     padding-right: 10px; /* for scrollbar spacing */
   }
+
+  .notification-card {
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  
+  
+  .notification-card.rejected {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .notifications-scroll-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
