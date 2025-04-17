@@ -15,7 +15,7 @@ const Requests = () => {
       const res = await axios.get(`${API_BASE_URL}/api/bookings/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setRequests(setRequests(res.data.filter((req) => req.status === 'pending')));
+      setRequests(setRequests(res.data));
     } catch (error) {
       toast.error('Failed to fetch booking requests');
     } finally {
