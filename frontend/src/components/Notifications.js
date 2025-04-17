@@ -42,9 +42,6 @@ const Notifications = () => {
             <div>
               <strong>{req.renter?.firstName || 'Someone'}</strong> has requested to book <strong>{req.car?.brand} {req.car?.model}</strong>.
             </div>
-            <div>
-              From <strong>{req.startDate} {req.startTime}</strong> to <strong>{req.endDate} {req.endTime}</strong>.
-            </div>
           </div>
         ))}
       </div>
