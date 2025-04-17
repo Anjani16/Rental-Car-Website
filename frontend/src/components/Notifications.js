@@ -36,13 +36,20 @@ const Notifications = () => {
         <p style={{ color: 'red' }}>No Notifications yet</p>
       ) : (
         <div className="notification-list">
-          {requests.map((req) => (
-            <div key={req._id} className="notification-card">
-              You have a booking request for <strong>{req.car?.brand} {req.car?.model}</strong> from <strong>{req.renter?.firstName || 'Unknown'}</strong> <br />
-              From <strong>{req.startDate} {req.startTime}</strong> to <strong>{req.endDate} {req.endTime}</strong>.
-            </div>
-          ))}
-        </div>
+  {requests.map((req) => (
+    <div key={req._id} className="notification-card">
+      <div>
+        <strong>{req.renter?.firstName || 'Someone'}</strong> has requested to book <strong>{req.car?.brand} {req.car?.model}</strong>.
+      </div>
+      <div>
+        From <strong>{req.startDate} {req.startTime}</strong> to <strong>{req.endDate} {req.endTime}</strong>.
+      </div>
+      <div className="notification-divider"></div>
+      <div style={{ fontSize: '14px', color: '#555' }}>Total: ${req.totalPrice}</div>
+    </div>
+  ))}
+</div>
+
       )}
     </div>
   );
