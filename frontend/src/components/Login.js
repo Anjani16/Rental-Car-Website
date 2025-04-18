@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import CarLogo from '../images/CarLogo.png';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import HeaderLogo from '../images/HeaderLogo.png';
 
+import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -16,6 +17,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [activeUser, setActiveUser] = useState('owner');
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext); // Access the theme from context
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -103,7 +105,7 @@ const Login = () => {
   </div>
 </header>
 
-          <h2 className="login-heading">Login</h2>
+          <h2 className={`login-heading ${theme}`}>Login</h2>
 
           <div className="login-buttons">
             <button

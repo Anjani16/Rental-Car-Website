@@ -11,6 +11,16 @@
   box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
+/* Light theme styles for login heading */
+.login-heading.light {
+  color: #000; /* Light theme text color */
+}
+
+/* Dark theme styles for login heading */
+.login-heading.dark {
+  color: #fff; /* Dark theme text color */
+}
+
 /* Login Heading */
 .login-heading {
   font-size: 24px;

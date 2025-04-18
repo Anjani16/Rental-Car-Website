@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { forgotPassword } from '../api'; // Import the forgotPassword function
 import '../styles/ForgotPassword.css';
+import { ThemeContext } from './ThemeContext'; // adjust the path as needed
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext); // Get current theme ('light' or 'dark')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +39,8 @@ const ForgotPassword = () => {
   return (
     <div className="forgot-password-wrapper">
       {/* Header */}
-      <header className="app-header">
-        <h1>Car Rental Management System</h1>
+      <header className={`app-header ${theme}`}>
+        <h1 className={`header-title ${theme}`}>Car Rental Management System</h1>
       </header>
 
       {/* Forgot Password Form */}
