@@ -152,11 +152,12 @@ const OwnerHeader = () => {
   }, []);
 
   return (
-    <header className="app-header">
+    // <div className={`app ${theme}`}>
+    <header className={`app-header ${theme}`}>
       {/* Left Side: App Title */}
       <div class="header-left">
-         <img src={HeaderLogo} alt="Logo" class="logo" />
-         <h1 class="title">Car Rental Management System</h1>
+         <img src={HeaderLogo} alt="Logo" className={`logo ${theme === 'dark' ? 'dark-logo' : 'light-logo'}`} />
+         <h1 className={`title ${theme === 'dark' ? 'dark-title' : 'light-title'}`}>Car Rental Management System</h1>
        </div>
 
       {/* Hamburger Menu (Visible on Small Screens) */}
@@ -182,7 +183,7 @@ const OwnerHeader = () => {
       {/* Right Side: Profile Icon and Dropdown */}
       <div className="profile-dropdown-container" ref={dropdownRef} style={{color:"black"}}>
         <div
-          className={`profile-icon ${activeTab === 'Profile' ? 'active' : ''}`}
+          className={`profile-icon ${theme} ${activeTab === 'Profile' ? 'active' : ''}`}
           onClick={(e) => {
             e.stopPropagation(); // Stop event propagation
             setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
@@ -235,6 +236,7 @@ const OwnerHeader = () => {
         )}
       </div>
     </header>
+    // </div>
   );
 };
 

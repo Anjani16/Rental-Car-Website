@@ -14,6 +14,90 @@
   box-sizing: border-box;
 }
 
+/* Title styling */
+.title {
+  transition: color 0.3s ease;
+}
+
+/* Logo filters (optional, if logo needs adjustment) */
+.logo {
+  width: 40px;
+  height: 40px;
+  transition: filter 0.3s ease;
+}
+
+.light-logo {
+  filter: none;
+}
+
+.dark-logo {
+  filter: brightness(0) invert(1); /* makes light logos dark */
+}
+
+
+/* Light Theme */
+.app-header.light {
+  background-color: #50BBF6;
+  color: #111;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Dark Theme */
+.app-header.dark {
+  background-color: #444;
+  color: white;
+  border-bottom: 1px solid #444;
+}
+
+.profile-icon {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+/* Light Theme */
+.profile-icon.light {
+  color: #333;
+  background-color: #50BBF6;
+}
+
+/* Dark Theme */
+.profile-icon.dark {
+  color: #fff;
+  background-color: #2c2c2c;
+}
+
+.profile-icon.active {
+  outline: 2px solid #50BBF6;
+}
+
+
+/* Shared Styles */
+.header-left .title {
+  font-size: 1.5rem;
+  margin-left: 10px;
+  transition: color 0.3s ease;
+}
+
+/* Light theme */
+.header-left .title.light-title {
+  color: #1a1a1a;
+}
+
+/* Dark theme */
+.header-left .title.dark-title {
+  color: #f5f5f5;
+}
+.header-nav li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.app-header.dark .header-nav li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
 /* App Title */
 .app-header h1 {
   margin: 0;

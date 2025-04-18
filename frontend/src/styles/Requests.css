@@ -219,6 +219,16 @@
   overflow: hidden; /* Hide overflow for the main container */
 }
 
+.history-container.light {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark Theme */
+.history-container.dark {
+  background-color: #1e1e1e;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05); /* Light subtle shadow */
+}
 /* Wrapper for the table with scroll */
 .table-wrapper {
   max-height: 400px; /* Set max height for the table */

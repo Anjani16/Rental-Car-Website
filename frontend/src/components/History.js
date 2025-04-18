@@ -35,7 +35,7 @@ const History = () => {
   if (loading) return <div className="loading-message">Loading booking history...</div>;
 
   return (
-    <div className="history-container" style={{marginTop:"10%"}}>
+    <div className={`history-container ${theme}`} style={{marginTop:"10%"}}>
       <h2 className={`history-heading ${theme}`}>Booking History</h2>
       {history.length === 0 ? (
         <p className={`no-history-message ${theme}`}>No booking history found</p>
