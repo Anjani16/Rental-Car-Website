@@ -98,10 +98,10 @@ const Login = () => {
 
       <div className="login-page">
         <div className="login-wrapper">
-        <header class="app-header">
+        <header class={`app-header ${theme}`}>
   <div class="header-left">
-    <img src={HeaderLogo} alt="Logo" class="logo" />
-    <h1 class="title">Car Rental Management System</h1>
+    <img src={HeaderLogo} alt="Logo" className={`logo ${theme === 'dark' ? 'dark-logo' : 'light-logo'}`} />
+    <h1 className={`title ${theme}`}>Car Rental Management System</h1>
   </div>
 </header>
 

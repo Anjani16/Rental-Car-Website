@@ -11,6 +11,39 @@
   box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
+.app-header.light {
+  background-color: #50BBF6;
+  color: #111;
+}
+
+.app-header.dark {
+  background-color: #444;
+  color: white;
+}
+
+/* Title styling */
+.title.light {
+  color: #000000;
+}
+
+.title.dark {
+  color: #ffffff;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  transition: filter 0.3s ease;
+}
+
+.light-logo {
+  filter: none;
+}
+
+.dark-logo {
+  filter: brightness(0) invert(1); /* makes light logos dark */
+}
+
 /* Light theme styles for login heading */
 .login-heading.light {
   color: #000; /* Light theme text color */
