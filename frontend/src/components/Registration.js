@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import '../styles/registration.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeContext } from "./ThemeContext"; // adjust path if needed
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
 const Registration = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
+  
   const role = location.state?.role || 'renter'; // Role is passed from the login page
   const [formData, setFormData] = useState({
     firstName: '',
@@ -126,7 +129,7 @@ const Registration = () => {
   };
 
   return (
-    <div className="registration-wrapper">
+    <div className={`registration-wrapper ${theme}`}>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -143,7 +146,7 @@ const Registration = () => {
       <Header />
 
       {/* Dynamic Heading */}
-      <h2 className="registration-heading">
+      <h2 className={`registration-heading ${theme}`}>
         Register as {role === 'owner' ? 'Owner' : 'Renter'}
       </h2>
 

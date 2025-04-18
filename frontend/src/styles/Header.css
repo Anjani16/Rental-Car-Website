@@ -1,4 +1,29 @@
 /* Header */
+
+/* .app-header {
+  padding: 20px;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+} */
+
+/* Light Theme */
+.app-header.light {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+/* Dark Theme */
+.app-header.dark {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* Optional: h1 specific */
+.header-title {
+  font-size: 2rem;
+  margin: 0;
+}
+
 .app-header {
     background-color: #3E86CE; /* Background color for the header */
     padding: 15px 20px; /* Padding for the header */

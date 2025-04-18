@@ -14,6 +14,43 @@
   margin-left: 35%;
 }
 
+/* General styling for the registration page */
+/* .registration-wrapper {
+  padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+} */
+
+/* Light Theme */
+.registration-wrapper.light {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Dark Theme */
+.registration-wrapper.dark {
+  background-color: #333;
+  color: #f9f9f9;
+}
+
+/* Styling for the dynamic registration heading */
+.registration-heading {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 20px;
+  transition: color 0.3s ease;
+}
+
+/* Light Theme Heading */
+.registration-heading.light {
+  color: #333;
+}
+
+/* Dark Theme Heading */
+.registration-heading.dark {
+  color: #f9f9f9;
+}
+
+
 /* Registration Heading */
 .registration-heading {
   font-size: 20px; /* Reduced font size */
