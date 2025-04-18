@@ -191,7 +191,7 @@ const Catalog = () => {
           </button>
         </div>
         {filteredCars.length === 0 && searchQuery.trim() !== "" && (
-          <div className="no-cars-message">
+          <div className="no-cars-message" style={{color:"red"}}>
             No cars found matching "{searchQuery}"
           </div>
         )}

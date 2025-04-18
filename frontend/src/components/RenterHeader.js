@@ -97,13 +97,6 @@ const RenterHeader = () => {
       action: () => navigate('/renter/profile/renter-info'), // Navigate to account info
     },
     {
-      label: 'Theme',
-      subOptions: [
-        { label: 'Light', action: () => console.log('Light theme selected') },
-        { label: 'Dark', action: () => console.log('Dark theme selected') },
-      ],
-    },
-    {
       label: 'Delete Account',
       subOptions: [
         {
@@ -185,7 +178,7 @@ const RenterHeader = () => {
       </nav>
 
       {/* Right Side: Profile Icon and Dropdown */}
-      <div className="profile-dropdown-container" ref={dropdownRef}>
+      <div className="profile-dropdown-container" ref={dropdownRef} style={{color:"black"}}>
         <div
           className={`profile-icon ${activeTab === 'Profile' ? 'active' : ''}`}
           onClick={(e) => {

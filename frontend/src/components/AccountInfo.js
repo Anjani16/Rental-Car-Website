@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import OwnerHeader from "./OwnerHeader";
 import { fetchUserDetails, updateUserDetails } from "../api"; // Import the API functions
 import "../styles/AccountInfo.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AccountInfo = () => {
   const [user, setUser] = useState({
@@ -49,10 +51,10 @@ const AccountInfo = () => {
       try {
         const response = await updateUserDetails(token, editableUser);
         console.log("Updated User Data:", response.data);
-        alert("Account information updated successfully!");
+        toast.success("Account information updated successfully!");
       } catch (error) {
         console.error("Error updating user details:", error);
-        alert("Failed to update account information.");
+        toast.error("Failed to update account information.");
       }
     }
   };
@@ -60,6 +62,7 @@ const AccountInfo = () => {
   return (
     <div className="account-info-container">
       <OwnerHeader />
+      <ToastContainer />
       <div className="account-info-content">
         <h2>Account Information</h2>
         <div 
