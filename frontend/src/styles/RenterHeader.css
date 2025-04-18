@@ -24,6 +24,170 @@
   padding: 15px 20px; /* Add padding to the title */
 }
 
+/* General styles for the header */
+/* .app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+} */
+
+/* Light theme styles */
+/* .app-header.light {
+  background-color: #fff;
+  color: #333;
+} */
+
+.app-header.light {
+  background-color: #50BBF6;
+  color: #111;
+  border-bottom: 1px solid #ccc;
+}
+
+.header-left.light {
+  display: flex;
+  align-items: center;
+}
+
+
+
+.title.light {
+  font-size: 1.8rem;
+  margin-left: 10px;
+  color: #333;
+}
+
+/* Dark theme styles */
+.app-header.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.header-left.dark {
+  display: flex;
+  align-items: center;
+}
+
+.logo.dark {
+  width: 50px;
+  height: auto;
+}
+
+.title.dark {
+  font-size: 1.8rem;
+  margin-left: 10px;
+  color: #fff;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+  display: none;
+  cursor: pointer;
+}
+
+.hamburger-menu.light {
+  color: #333;
+}
+
+.hamburger-menu.dark {
+  color: #fff;
+}
+
+/* Navigation tabs */
+.header-nav {
+  display: flex;
+}
+
+.header-nav ul {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav li {
+  margin: 0 15px;
+  cursor: pointer;
+}
+
+.header-nav li.active {
+  font-weight: bold;
+}
+
+.header-nav.light li {
+  color: #333;
+}
+
+.header-nav.dark li {
+  color: #fff;
+}
+
+.header-nav.light li.active {
+  color: #007bff;
+}
+
+.header-nav.dark li.active {
+  color: #0d6efd;
+}
+
+/* Profile Icon and Dropdown */
+.profile-dropdown-container {
+  position: relative;
+}
+
+.profile-icon {
+  cursor: pointer;
+}
+
+.profile-icon.light {
+  color: #333;
+}
+
+.profile-icon.dark {
+  color: #fff;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 100;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown.light {
+  background-color: #fff;
+  color: #333;
+}
+
+.dropdown.dark {
+  background-color: #444;
+  color: #fff;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown-item.light {
+  color: #333;
+}
+
+.dropdown-item.dark {
+  color: #fff;
+}
+
+
+
 /* Hamburger Menu (Hidden by Default) */
 .hamburger-menu {
   display: none; /* Hide by default */
@@ -181,9 +345,17 @@
 }
 
 .logo {
-  width: 50px;
-  height: auto;
-  margin-left: 5px;
+  width: 40px;
+  height: 40px;
+  transition: filter 0.3s ease;
+}
+
+.light-logo {
+  filter: none;
+}
+
+.dark-logo {
+  filter: brightness(0) invert(1); /* makes light logos dark */
 }
 
 .title {

@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect , useContext} from 'react';
 import { FaUserCircle, FaBars, FaHeart, FaShoppingCart } from 'react-icons/fa'; // Added Wishlist and Cart icons
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/RenterHeader.css';
 import HeaderLogo from '../images/HeaderLogo.png';
+import { ThemeContext } from './ThemeContext'; // Import ThemeContext
 
 const RenterHeader = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const RenterHeader = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for profile dropdown
   const [openSubDropdown, setOpenSubDropdown] = useState(null); // State for sub-dropdown
   const dropdownRef = useRef(null); // Ref for the dropdown container
+  const { theme } = useContext(ThemeContext);
 
   // Determine the active tab based on the current route
   const getActiveTab = () => {
@@ -150,25 +152,27 @@ const RenterHeader = () => {
   }, []);
 
   return (
-    <header className="app-header">
+    <header className={`app-header ${theme}`}>
       {/* Left Side: App Title */}
-      <div class="header-left">
-         <img src={HeaderLogo} alt="Logo" class="logo" />
-         <h1 class="title">Car Rental Management System</h1>
+      <div class={`header-left ${theme}`}>
+         {/* <img src={HeaderLogo} alt="Logo" className={`logo ${theme}`} /> */}
+          <img src={HeaderLogo} alt="Logo" className={`logo ${theme === 'dark' ? 'dark-logo' : 'light-logo'}`} />
+         
+         <h1 className={`title ${theme}`}>Car Rental Management System</h1>
        </div>
 
       {/* Hamburger Menu (Visible on Small Screens) */}
-      <div className="hamburger-menu" onClick={toggleMenu}>
+      <div className={`hamburger-menu ${theme}`} onClick={toggleMenu}>
         <FaBars size={24} />
       </div>
 
       {/* Middle: Navigation Tabs */}
-      <nav className={`header-nav ${isMenuOpen ? 'open' : ''}`}>
+      <nav className={`header-nav ${theme} ${isMenuOpen ? 'open' : ''}`}>
         <ul>
           {['Catalog', 'Notifications', 'History', 'Wishlist', 'Cart'].map((tab) => (
             <li
               key={tab}
-              className={activeTab === tab ? 'active' : ''}
+              className={`${activeTab === tab ? 'active' : ''} ${theme}`}
               onClick={() => handleTabClick(tab)}
             >
               {tab === 'Wishlist' ? <FaHeart size={16} /> : tab === 'Cart' ? <FaShoppingCart size={16} /> : tab}
@@ -178,9 +182,9 @@ const RenterHeader = () => {
       </nav>
 
       {/* Right Side: Profile Icon and Dropdown */}
-      <div className="profile-dropdown-container" ref={dropdownRef} style={{color:"black"}}>
+      <div className={`profile-dropdown-container ${theme}`} ref={dropdownRef} style={{color:"black"}}>
         <div
-          className={`profile-icon ${activeTab === 'Profile' ? 'active' : ''}`}
+          className={`profile-icon ${activeTab === 'Profile' ? 'active' : ''} ${theme}`}
           onClick={(e) => {
             e.stopPropagation(); // Stop event propagation
             setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
