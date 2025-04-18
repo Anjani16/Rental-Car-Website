@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import { getUserIdFromToken, getBookingsByRenter } from '../api';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Catalog.css';
 import '../styles/RentalHistory.css'; // Optional: external CSS
+import { ThemeContext } from './ThemeContext';
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -22,6 +23,7 @@ const RentalHistory = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const userId = getUserIdFromToken();
+  const { theme } = useContext(ThemeContext); // ✅ Get current theme
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,14 +56,14 @@ const RentalHistory = () => {
 
   return (
     <div className="catalog">
-      <div className="catalog-header">
+      <div className={`catalog-header ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`}>
         <h2>Your Rental History</h2>
       </div>
 
       <div className="car-grid">
         {rentalHistory.length === 0 ? (
-          <div className="no-cars-message">
-            You haven't booked any cars yet. Start exploring now!
+          <div className={`no-renter-history-message ${theme}`}>
+            🚗 You haven't booked any cars yet. Start exploring now!
           </div>
         ) : (
           rentalHistory.map((bookedCar, index) => (

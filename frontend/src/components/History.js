@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/Requests.css'; // Reuse same styling
+import { ThemeContext } from './ThemeContext';
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5555';
 
 const History = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { theme } = useContext(ThemeContext);
 
   const fetchHistory = async () => {
     try {
@@ -34,12 +36,12 @@ const History = () => {
 
   return (
     <div className="history-container" style={{marginTop:"10%"}}>
-      <h2 className="history-heading">Booking History</h2>
+      <h2 className={`history-heading ${theme}`}>Booking History</h2>
       {history.length === 0 ? (
-        <p className="no-history-message">No booking history found</p>
+        <p className={`no-history-message ${theme}`}>No booking history found</p>
       ) : (
-        <div className="table-wrapper">
-          <table className="history-table">
+        <div className={`table-wrapper ${theme}`}>
+          <table className={`history-table ${theme}`}>
             <thead>
               <tr>
                 <th>Car</th>
@@ -52,7 +54,7 @@ const History = () => {
             </thead>
             <tbody>
               {history.map((req) => (
-                <tr key={req._id} className="table-row">
+                <tr key={req._id} className={`table-row ${theme}`}>
                   <td>{req.car?.brand} {req.car?.model}</td>
                   <td>{req.renter?.firstName || 'Unknown'}</td>
                   <td>{req.startDate} {req.startTime}</td>

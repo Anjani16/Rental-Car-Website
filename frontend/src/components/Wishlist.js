@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext  } from 'react';
 import { 
   fetchWishlistedCars, 
   toggleWishlist, 
@@ -14,6 +14,7 @@ import '../styles/Catalog.css';
 import BookingModal from "./BookingModal";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeContext } from './ThemeContext';
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -28,7 +29,7 @@ const Wishlist = () => {
   const navigate = useNavigate();
   const userId = getUserIdFromToken();
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,13 +144,13 @@ const Wishlist = () => {
 
   return (
     <div className="catalog">
-      <div className="catalog-header">
-        <h2>Your Wishlist</h2>
+      <div className={`catalog-header ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`}>
+      <h2>Your Wishlist</h2>
       </div>
 
       <div className="car-grid">
         {wishlistedCars.length === 0 ? (
-          <div className="no-cars-message">
+          <div className={`no-cars-message ${theme}`}>
             No cars in your wishlist. Start adding some from the catalog!
           </div>
         ) : (

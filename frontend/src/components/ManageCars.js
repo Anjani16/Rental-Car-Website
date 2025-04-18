@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ManageCars.css";
 import { fetchUserCars } from '../api'; // Import the fetchUserCars function
+import { ThemeContext } from './ThemeContext'; // Import your theme context
+
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 const ManageCars = () => {
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
   const [error, setError] = useState(null);
-
+  const { theme } = useContext(ThemeContext); 
   // Fetch cars owned by the logged-in user
   useEffect(() => {
     const fetchCars = async () => {
@@ -55,10 +57,10 @@ const ManageCars = () => {
   };
 
   return (
-    <div className="manage-cars">
-      <h2>Manage Cars</h2>
+    <div className={`manage-cars ${theme}`}>
+      <h2 className={`heading ${theme}`}>Manage Cars</h2>
       <button
-        className="addcar"
+        className={`addcar ${theme}`}
         onClick={() => navigate("/add-car")}
         style={{
           border: "1px solid #575757",
@@ -70,23 +72,23 @@ const ManageCars = () => {
       >
         + Add New Car
       </button>
-      <h3>Owned Cars</h3>
-      {error && <p className="error-message">{error}</p>}
-      <div className="table-container">
-      <table className="car-table">
+      <h3 className={`owned-cars-header ${theme}`}>Owned Cars</h3>
+      {error && <p className={`error-message ${theme}`}>{error}</p>}
+      <div className={`table-container ${theme}`}>
+      <table className={`car-table ${theme}`}>
   <tbody>
     {cars.map((car) => (
-      <tr key={car._id} className="car-row">
+      <tr key={car._id} className={`car-row ${theme}`}>
         {/* Image Column */}
         <td>
           {car.image ? (
             <img 
       src={`${API_BASE_URL.replace(/\/$/, '')}/${car.image.replace(/^\//, '')}`} 
       alt={`${car.brand} ${car.model}`} 
-      className="car-imageOwner" 
+      className={`car-imageOwner ${theme}`}
     />
           ) : (
-            <div className="no-image">No Image</div>
+            <div className={`no-image ${theme}`}>No Image</div>
           )}
         </td>
 

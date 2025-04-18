@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/Requests.css'; // Optional: external CSS
+import { ThemeContext } from './ThemeContext';
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5555';
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { theme } = useContext(ThemeContext);
   const fetchRequests = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -46,12 +47,12 @@ const Requests = () => {
 
   return (
     <div className="requests-container" style={{ paddingTop: '80px' }}>
-      <h2 className="requests-heading">Booking Requests</h2>
+      <h2 className={`requests-heading ${theme}`}>Booking Requests</h2>
       {requests.length === 0 ? (
-        <p>No booking requests found</p>
+        <p className={`no-history-message ${theme}`}>No booking requests found</p>
       ) : (
-        <div className="table-wrapper">
-          <table className="requests-table">
+        <div className={`table-wrapper ${theme}`}>
+          <table className={`requests-table ${theme}`}>
             <thead>
               <tr>
                 <th>Car</th>

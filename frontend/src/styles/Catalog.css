@@ -1,4 +1,48 @@
 /* Catalog.css */
+
+.catalog-header.dark-theme h2{
+  color: #ffffff;
+}
+
+body.light .catalog-header.light-theme {
+  color: white;
+}
+
+.cart-total.dark-theme {
+  background-color: white;
+  color: #fff;
+}
+
+/* Light Theme */
+.light.no-cars-message {
+  background-color: #f8f8f8;
+  color: #333;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Dark Theme */
+.dark.no-cars-message {
+  background-color: #2e2e2e;
+  color: #f0f0f0;
+  padding: 15px;
+  border: 1px solid #555;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+body.light .cart-total.light-theme{
+  background-color: black;
+}
+
+body.light .cart-total.light-theme h3 {
+  color: white;
+}
 .catalog {
     padding: 20px;
     margin-top: 80px; /* Add margin to avoid overlap with the header */
@@ -343,11 +387,11 @@
 
 /* Empty cart message */
 .no-cars-message {
-  text-align: center;
-  font-size: 18px;
-  color: #666;
-  margin-top: 40px;
-  width: 100%;
+  max-width: 600px;        /* Keep it clean and centered */
+  margin: 20px auto;       /* Center horizontally */
+  word-wrap: break-word;   /* Allow long text to wrap */
+  line-height: 1.5;        /* Improve readability */
+  font-size: 16px;
 }
 
 .cart-button {

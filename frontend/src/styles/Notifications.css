@@ -3,6 +3,47 @@
     max-width: 800px;
     margin: 0 auto;
   }
+
+  /* Light Theme */
+/* .light.no-notifications {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Dark Theme */
+.dark.no-notifications {
+  color: #ff6b6b;
+  text-align: center;
+  margin-top: 20px;
+} */
+
+.no-notifications {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 16px 24px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
+  transition: all 0.3s ease;
+}
+
+/* Light Theme */
+.light.no-notifications {
+  /* background-color: #fff3f3; */
+  color: black;
+  /* border: 1px solid #ffdddd; */
+}
+
+/* Dark Theme */
+.dark.no-notifications {
+  /* background-color: #423939; */
+  color: white;
+  /* border: 1px solid #ffdddd; */
+}
+
   
   .notifications-container h2 {
     display: flex;
@@ -115,6 +156,16 @@
   .notification-card strong {
     color: #333;
   }
+
+  .status-text.approved {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .status-text.rejected {
+    color: red;
+    font-weight: bold;
+  }
   
   .notification-divider {
     margin-top: 10px;
@@ -126,6 +177,8 @@
   }
 
   .notification-card {
+    background-color: #fbffeb;
+    color: black;
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 10px;
@@ -136,7 +189,7 @@
   
   .notification-card.rejected {
     background-color: #ffebee;
-    color: #c62828;
+    color: black;
   }
   
   .notifications-scroll-wrapper {

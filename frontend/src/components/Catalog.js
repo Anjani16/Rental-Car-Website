@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { 
   fetchAllCars, 
   toggleWishlist, 
@@ -14,6 +14,8 @@ import "../styles/Catalog.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BookingModal from "./BookingModal";
+import { ThemeContext } from "./ThemeContext"; // adjust path if needed
+
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
 
@@ -31,6 +33,7 @@ const Catalog = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userId = getUserIdFromToken();
+  const { theme } = useContext(ThemeContext); // ✅ Get current theme
 
   // Fetch all cars and cart items
   useEffect(() => {
@@ -176,7 +179,8 @@ const Catalog = () => {
     <div className="catalog">
       <ToastContainer position="top-right" autoClose={3000} />
       
-      <div className="catalog-header">
+      <div className={`catalog-header ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`}>
+
         <h2>Catalog</h2>
         <div className="search-bar">
           <input

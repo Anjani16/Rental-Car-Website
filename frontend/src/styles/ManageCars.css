@@ -1,4 +1,132 @@
 /* ManageCars.css */
+/* Light Theme */
+.light .manage-cars {
+  background-color: #fff;
+  color: #000;
+}
+
+.light .heading {
+  color: #333;
+}
+
+.light .addcar {
+  background-color: #E7E7E7;
+  color: black;
+  border: 1px solid #575757;
+}
+
+.light .owned-cars-header {
+  color: #333;
+}
+
+.light .table-container {
+  background-color: #f9f9f9;
+}
+
+.light .car-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.light .car-table th,
+.light .car-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.light .car-row {
+  background-color: #f9f9f9;
+}
+
+.light .car-row:hover {
+  background-color: #e6e6e6;
+}
+
+.light .availability {
+  text-align: center;
+}
+
+.light .available {
+  color: green;
+}
+
+.light .unavailable {
+  color: red;
+}
+
+.light .error-message {
+  color: red;
+  font-size: 14px;
+}
+
+.light .no-image {
+  color: #333;
+}
+
+/* Dark Theme */
+.dark .manage-cars {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark .heading {
+  color: #fff;
+}
+
+.dark .addcar {
+  background-color: #444;
+  color: white;
+  border: 1px solid #575757;
+}
+
+.dark .owned-cars-header {
+  color: #ddd;
+}
+
+.dark .table-container {
+  background-color: #444;
+}
+
+.dark .car-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dark .car-table th,
+.dark .car-table td {
+  padding: 10px;
+  border: 1px solid #555;
+}
+
+.dark .car-row {
+  background-color: #555;
+}
+
+.dark .car-row:hover {
+  background-color: #666;
+}
+
+.dark .availability {
+  text-align: center;
+}
+
+.dark .available {
+  color: lightgreen;
+}
+
+.dark .unavailable {
+  color: lightcoral;
+}
+
+.dark .error-message {
+  color: lightcoral;
+  font-size: 14px;
+}
+
+.dark .no-image {
+  color: #bbb;
+}
+
 .manage-cars {
     padding: 20px;
     margin-top: 7%; /* Account for fixed header */

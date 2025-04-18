@@ -1,0 +1,10 @@
+
+.cart-total.dark-theme {
+    background-color: white;
+    color: #fff;
+  }
+  
+  body.light .cart-total.light-theme{
+    background-color: black;
+    color: white;
+  }

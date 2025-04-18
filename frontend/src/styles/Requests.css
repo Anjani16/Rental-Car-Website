@@ -1,11 +1,163 @@
 .requests-container {
     padding: 20px;
   }
+
+  .no-history-message {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  /* Light theme */
+  .no-history-message.light {
+    color: #444;
+  }
+  
+  /* Dark theme */
+  .no-history-message.dark {
+    color: #ccc;
+  }
+
+  .history-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Light theme */
+  .history-heading.light {
+    color: #222;
+  }
+  
+  /* Dark theme */
+  .history-heading.dark {
+    color: #f5f5f5;
+  }
+
+  /* Light Theme */
+.light .table-wrapper {
+  background-color: #fff;
+  color: #000;
+}
+
+.light .history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.light .history-table th,
+.light .history-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.light .table-row {
+  background-color: #f9f9f9;
+}
+
+.light .table-row:hover {
+  background-color: #e6e6e6;
+}
+
+
+.light .requests-table {
+  background-color: #fff;
+  color: #000;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.light .requests-table th, .light .requests-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.light .btn-approve {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.light .btn-reject {
+  background-color: #f44336;
+  color: white;
+}
+
+.dark .history-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+.dark .history-table th,
+.dark .history-table td {
+  padding: 10px;
+  border: 1px solid #444;
+}
+
+.dark .table-row {
+  background-color: white;
+}
+
+.dark .table-row:hover {
+  background-color: #555;
+}
+
+/* Dark Theme */
+.dark .table-wrapper {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark .requests-table {
+  background-color: #444;
+  color: #fff;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.dark .requests-table th, .dark .requests-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #555;
+}
+
+.dark .btn-approve {
+  background-color: #81c784;
+  color: white;
+}
+
+.dark .btn-reject {
+  background-color: #e57373;
+  color: white;
+}
+
+/* Optional: Hover effects */
+.light .requests-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.dark .requests-table tr:hover {
+  background-color: #555;
+}
+
   
   .requests-heading {
     text-align: center;
+    font-size: 24px;
+    font-weight: bold;
     margin-bottom: 20px;
   }
+  
+  /* Light theme for heading */
+  .requests-heading.light {
+    color: #222;
+  }
+  
+  /* Dark theme for heading */
+  .requests-heading.dark {
+    color: #f5f5f5;
+  }
+
   
   .table-wrapper {
     overflow-x: auto;
@@ -113,7 +265,7 @@
 .history-table td {
   padding: 15px;
   font-size: 15px;
-  color: #555;
+  color: #6e6c6c;
   border-bottom: 1px solid #ddd;
 }
 

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { fetchCartItems, removeFromCart, updateCartItem, submitBooking } from "../api";
 import { FaTimes, FaShoppingCart, FaPlus, FaMinus } from "react-icons/fa";
 import "../styles/Catalog.css";
 import { useNavigate } from "react-router-dom";
 import BookingModal from "./BookingModal";
 import { ToastContainer, toast } from 'react-toastify';
+import { ThemeContext } from "./ThemeContext"; // adjust path if needed
 
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5555";
@@ -17,6 +18,7 @@ const Cart = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext); // ✅ Get current theme
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -95,17 +97,18 @@ const Cart = () => {
 
   return (
     <div className="catalog">
-      <div className="catalog-header">
+      {/* ✅ Themed Cart Header */}
+      <div className={`catalog-header ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`}>
         <h2>Your Cart</h2>
         {cartItems.length > 0 && (
-          <div className="cart-total">
+          <div className={`cart-total ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`}>
             <h3>Total: ${calculateTotal()}</h3>
           </div>
         )}
       </div>
 
       {cartItems.length === 0 ? (
-        <div className="no-cars-message">
+        <div className={`no-cars-message ${theme}`}>
           Your cart is empty. Start adding cars from the catalog!
         </div>
       ) : (

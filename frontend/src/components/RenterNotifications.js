@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { ThemeContext } from './ThemeContext';
+
 import '../styles/Notifications.css'; // reuse or create new if needed
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5555';
@@ -8,7 +10,7 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5555
 const RenterNotifications = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { theme } = useContext(ThemeContext);
   const fetchRequests = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -37,9 +39,9 @@ const RenterNotifications = () => {
 
   return (
     <div className="requests-container" style={{ paddingTop: '80px' }}>
-      <h2 className="requests-heading">Notifications</h2>
+      <h2 className={`requests-heading ${theme}`}>Notifications</h2>
       {requests.length === 0 ? (
-        <p style={{ color: 'red' }}>No Notifications yet</p>
+        <p className={`no-notifications ${theme}`}>🚫 No Notifications yet</p>
       ) : (
         <div className="notifications-scroll-wrapper">
           <div className="notification-list">
@@ -47,9 +49,9 @@ const RenterNotifications = () => {
               <div key={req._id} className={`notification-card ${req.status}`}>
                 <div>
                   {req.status === 'approved' ? (
-                    <span>✅ Owner <strong>approved</strong> your request for <strong>{req.car?.brand} {req.car?.model}</strong>.</span>
+                    <span>✅ Owner <span className="status-text approved">approved</span> your request for <strong>{req.car?.brand} {req.car?.model}</strong>.</span>
                   ) : (
-                    <span>❌ Owner <strong>rejected</strong> your request for <strong>{req.car?.brand} {req.car?.model}</strong>.</span>
+                    <span>❌ Owner <span className="status-text rejected">rejected</span> your request for <strong>{req.car?.brand} {req.car?.model}</strong>.</span>
                   )}
                 </div>
               </div>
